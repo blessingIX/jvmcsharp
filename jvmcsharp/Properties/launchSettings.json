@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "jvmcsharp": {
+      "commandName": "Project",
+      "commandLineArgs": "-Xjre \"D:\\Env\\jdk\\jdk8u392-b08\\jre\" java.lang.Object"
+    }
+  }
+}

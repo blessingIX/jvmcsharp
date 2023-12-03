@@ -1,10 +1,11 @@
-﻿namespace jvmcsharp.Main
+﻿namespace jvmcsharp
 {
     internal struct Cmd
     {
         public bool HelpFlag { get; private set; }
         public bool VersionFlag { get; private set; }
         public string CpOption { get; private set; }
+        public string XjreOption { get; private set; }
         public string Class { get; private set; }
         public string[] Args { get; private set; }
 
@@ -12,9 +13,10 @@
         {
             var cmd = new Cmd();
             var args = Environment.GetCommandLineArgs().Skip(1).ToList();
-            Var(args, v => cmd.HelpFlag = v, ["help", "?"], false);
-            Var(args, v => cmd.VersionFlag = v, ["version"], false);
-            Var(args, v => cmd.CpOption = v, ["classpath", "cp"], string.Empty);
+            Var(args, ["help", "?"], false, v => cmd.HelpFlag = v);
+            Var(args, ["version"], false, v => cmd.VersionFlag = v);
+            Var(args, ["classpath", "cp"], string.Empty, v => cmd.CpOption = v);
+            Var(args, ["Xjre"], string.Empty, v => cmd.XjreOption = v);
             if (args.Count > 0)
             {
                 cmd.Class = args[0];
@@ -28,7 +30,7 @@
             Console.WriteLine($"Usage: {Environment.GetCommandLineArgs()[0]} [-options] class [args...]");
         }
 
-        internal static void Var(List<string> args, Action<bool> action, string[] names, bool defalut)
+        internal static void Var(List<string> args, string[] names, bool defalut, Action<bool> action)
         {
             foreach (var name in names)
             {
@@ -40,7 +42,7 @@
             }
         }
 
-        internal static void Var(List<string> args, Action<string> action, string[] names, string defalut)
+        internal static void Var(List<string> args, string[] names, string defalut, Action<string> action)
         {
             foreach (var name in names)
             {

@@ -1,4 +1,4 @@
-﻿using jvmcsharp.Main;
+﻿using jvmcsharp.classpath;
 
 namespace jvmcsharp
 {
@@ -23,7 +23,18 @@ namespace jvmcsharp
 
         static void StartJVM(Cmd cmd)
         {
-            Console.WriteLine($"classpath:{cmd.CpOption} class:{cmd.Class} args:[{string.Join(" ", cmd.Args)}]");
+            var cp = new Classpath(cmd.XjreOption, cmd.CpOption);
+            Console.WriteLine($"classpath: {cp} class: {cmd.Class} args: [{string.Join(", ", cmd.Args)}]");
+            var className = cmd.Class.Replace(".", "/");
+            try
+            {
+                var (classData, entry) = cp.ReadClass(className);
+                Console.WriteLine($"classData: [{string.Join(", ", classData)}]");
+            }
+            catch
+            {
+                Console.WriteLine($"Could not find or load main class {cmd.Class}");
+            }
         }
     }
 }
