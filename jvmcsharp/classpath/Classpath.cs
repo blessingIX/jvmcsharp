@@ -15,16 +15,26 @@
         public (byte[], IEntry) ReadClass(string className)
         {
             className = $"{className}.class";
-            var bootClass = BootClasspath.ReadClass(className);
-            if (bootClass.Item1.Length > 0)
+            try
             {
-                return bootClass;
+                var bootClass = BootClasspath.ReadClass(className);
+                if (bootClass.Item1.Length > 0)
+                {
+                    return bootClass;
+                }
             }
-            var extClass = ExtClasspath.ReadClass(className);
-            if (extClass.Item1.Length > 0)
+            catch (ClassNotFoundException) { }
+
+            try
             {
-                return extClass;
+                var extClass = ExtClasspath.ReadClass(className);
+                if (extClass.Item1.Length > 0)
+                {
+                    return extClass;
+                }
             }
+            catch (ClassNotFoundException) { }
+
             return UserClasspath.ReadClass(className);
         }
 

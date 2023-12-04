@@ -1,6 +1,6 @@
 package jvmcsharp;
 
-public class ClassFileTest {
+public class ClassFileTest implements java.io.Serializable {
 	public static final boolean FLAG = true;
 	public static final byte BYTE = 123;
 	public static final char X = 'X';

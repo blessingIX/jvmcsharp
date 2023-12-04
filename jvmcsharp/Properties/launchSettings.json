@@ -3,6 +3,10 @@
     "jvmcsharp": {
       "commandName": "Project",
       "commandLineArgs": "-Xjre \"D:\\Env\\jdk\\zulu8.74.0.17-ca-fx-jdk8.0.392-win_x64\\jre\" java.lang.String"
+    },
+    "test": {
+      "commandName": "Project",
+      "commandLineArgs": "-Xjre \"D:\\Env\\jdk\\zulu8.74.0.17-ca-fx-jdk8.0.392-win_x64\\jre\" -cp \"../../../test\" jvmcsharp.ClassFileTest"
     }
   }
 }

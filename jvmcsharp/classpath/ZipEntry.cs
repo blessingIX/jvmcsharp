@@ -18,7 +18,7 @@ namespace jvmcsharp.classpath
                     return (reader.ReadBytes((int)stream.Length), this);
                 }
             }
-            throw new Exception($"class not found: {className}");
+            throw new ClassNotFoundException($"class not found: {className}");
         }
 
         public override string ToString() => AbsPath;

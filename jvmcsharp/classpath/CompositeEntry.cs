@@ -29,7 +29,7 @@
                     continue;
                 }
             }
-            throw new Exception($"class not found: {className}");
+            throw new ClassNotFoundException($"class not found: {className}");
         }
 
         public override string ToString() => string.Join(IEntry.PathListSeparator, Entries);

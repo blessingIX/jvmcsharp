@@ -1,6 +1,5 @@
 ﻿using jvmcsharp.classfile;
 using jvmcsharp.classpath;
-using System;
 
 namespace jvmcsharp
 {
@@ -48,7 +47,7 @@ namespace jvmcsharp
                 access flags: {BitConverter.ToString(BitConverter.GetBytes(cf.AccessFlags)).Replace('-', ' ')}
                 this class: {cf.ClassName()}
                 super class: {cf.SuperClassName()}
-                interfaces: {cf.InterfaceNames()}
+                interfaces: [{string.Join(", ", cf.InterfaceNames())}]
                 fields count: {cf.Fileds.Length}
                 {$"\t{string.Join("\n\t", cf.Fileds.Select(v => v.Name()))}"}
                 methods count: {cf.Methods.Length}
