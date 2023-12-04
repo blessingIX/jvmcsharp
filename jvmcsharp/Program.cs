@@ -1,5 +1,6 @@
 ﻿using jvmcsharp.classfile;
 using jvmcsharp.classpath;
+using jvmcsharp.rtda;
 
 namespace jvmcsharp
 {
@@ -30,6 +31,11 @@ namespace jvmcsharp
             var cf = LoadClass(className, cp);
             Console.WriteLine(cmd.Class);
             PrintClassInfo(cf);
+
+            Console.WriteLine("运行时数据区测试");
+            var frame = new Frame(100, 100);
+            TestLocalVars(frame.LocalVars);
+            TestOperandStack(frame.OperandStack);
         }
 
         static ClassFile LoadClass(string className, Classpath cp)
@@ -53,6 +59,46 @@ namespace jvmcsharp
                 methods count: {cf.Methods.Length}
                 {$"\t{string.Join("\n\t", cf.Methods.Select(v => v.Name()))}"}
                 """);
+        }
+
+        static void TestLocalVars(LocalVars localVars)
+        {
+            localVars.Set(0, 100);
+            localVars.Set(1, -100);
+            localVars.Set(2, 2997924580L);
+            localVars.Set(4, -2997924580L);
+            localVars.Set(6, 3.1415626f);
+            localVars.Set(7, 2.71828182845d);
+            localVars.Set<object>(9, null!);
+            Console.WriteLine($"""
+                {localVars.Get<int>(0)}
+                {localVars.Get<int>(1)}
+                {localVars.Get<long>(2)}
+                {localVars.Get<long>(4)}
+                {localVars.Get<float>(6)}
+                {localVars.Get<double>(7)}
+                {localVars.Get<object>(9) ?? "null"}
+                """);
+        }
+
+        static void TestOperandStack(OperandStack operandStack)
+        {
+            operandStack.Push(100);
+            operandStack.Push(-100);
+            operandStack.Push(2997924580L);
+            operandStack.Push(-2997924580L);
+            operandStack.Push(3.1415626f);
+            operandStack.Push(2.71828182845d);
+            operandStack.Push<object>(null!);
+            Console.WriteLine($""""
+                {operandStack.Pop<object>() ?? "null"}
+                {operandStack.Pop<double>()}
+                {operandStack.Pop<float>()}
+                {operandStack.Pop<long>()}
+                {operandStack.Pop<long>()}
+                {operandStack.Pop<int>()}
+                {operandStack.Pop<int>()}
+                """");
         }
     }
 }

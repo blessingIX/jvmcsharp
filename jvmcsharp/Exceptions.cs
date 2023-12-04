@@ -1,9 +1,6 @@
 ﻿namespace jvmcsharp
 {
-    internal class ClassNotFoundException : Exception
+    internal class ClassNotFoundException(string? message) : Exception(message)
     {
-        public ClassNotFoundException(string? message) : base(message)
-        {
-        }
     }
 }
