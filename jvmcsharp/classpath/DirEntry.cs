@@ -2,7 +2,7 @@
 {
     internal class DirEntry(string path) : IEntry
     {
-        public string AbsDir { get; private set; } = Path.GetFullPath(path);
+        public string AbsDir { get; internal set; } = Path.GetFullPath(path);
 
         public (byte[], IEntry) ReadClass(string className)
         {

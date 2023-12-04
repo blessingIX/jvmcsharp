@@ -1,4 +1,6 @@
-﻿using jvmcsharp.classpath;
+﻿using jvmcsharp.classfile;
+using jvmcsharp.classpath;
+using System;
 
 namespace jvmcsharp
 {
@@ -26,15 +28,32 @@ namespace jvmcsharp
             var cp = new Classpath(cmd.XjreOption, cmd.CpOption);
             Console.WriteLine($"classpath: {cp} class: {cmd.Class} args: [{string.Join(", ", cmd.Args)}]");
             var className = cmd.Class.Replace(".", "/");
-            try
-            {
-                var (classData, entry) = cp.ReadClass(className);
-                Console.WriteLine($"classData: [{string.Join(", ", classData)}]");
-            }
-            catch
-            {
-                Console.WriteLine($"Could not find or load main class {cmd.Class}");
-            }
+            var cf = LoadClass(className, cp);
+            Console.WriteLine(cmd.Class);
+            PrintClassInfo(cf);
+        }
+
+        static ClassFile LoadClass(string className, Classpath cp)
+        {
+            var (classData, _) = cp.ReadClass(className);
+            // Console.WriteLine($"classData: [{BitConverter.ToString(classData).Replace("-", ", ")}]");
+            return new ClassFile(classData);
+        }
+
+        static void PrintClassInfo(ClassFile cf)
+        {
+            Console.WriteLine($"""
+                version: {cf.MajorVersion}.{cf.MinorVersion}
+                constants count: {cf.ConstantPool.Length}
+                access flags: {BitConverter.ToString(BitConverter.GetBytes(cf.AccessFlags)).Replace('-', ' ')}
+                this class: {cf.ClassName()}
+                super class: {cf.SuperClassName()}
+                interfaces: {cf.InterfaceNames()}
+                fields count: {cf.Fileds.Length}
+                {$"\t{string.Join("\n\t", cf.Fileds.Select(v => v.Name()))}"}
+                methods count: {cf.Methods.Length}
+                {$"\t{string.Join("\n\t", cf.Methods.Select(v => v.Name()))}"}
+                """);
         }
     }
 }

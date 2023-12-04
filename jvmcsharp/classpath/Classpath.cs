@@ -2,9 +2,9 @@
 {
     internal class Classpath
     {
-        public IEntry BootClasspath { get; private set; } = EmptyEntry.Instance;
-        public IEntry ExtClasspath { get; private set; } = EmptyEntry.Instance;
-        public IEntry UserClasspath { get; private set; } = EmptyEntry.Instance;
+        public IEntry BootClasspath { get; internal set; } = EmptyEntry.Instance;
+        public IEntry ExtClasspath { get; internal set; } = EmptyEntry.Instance;
+        public IEntry UserClasspath { get; internal set; } = EmptyEntry.Instance;
 
         public Classpath(string jreOption, string cpOption)
         {

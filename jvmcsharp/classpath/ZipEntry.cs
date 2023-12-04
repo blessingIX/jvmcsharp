@@ -1,11 +1,10 @@
 ﻿using System.IO.Compression;
-using System.Text;
 
 namespace jvmcsharp.classpath
 {
     internal class ZipEntry(string path) : IEntry
     {
-        public string AbsPath { get; private set; } = Path.GetFullPath(path);
+        public string AbsPath { get; internal set; } = Path.GetFullPath(path);
 
         public (byte[], IEntry) ReadClass(string className)
         {
@@ -15,8 +14,8 @@ namespace jvmcsharp.classpath
                 {
                     if (entry.FullName != className) continue;
                     using var stream = entry.Open();
-                    using var reader = new StreamReader(stream);
-                    return (Encoding.UTF8.GetBytes(reader.ReadToEnd()), this);
+                    using var reader = new BinaryReader(stream);
+                    return (reader.ReadBytes((int)stream.Length), this);
                 }
             }
             throw new Exception($"class not found: {className}");

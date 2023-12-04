@@ -2,7 +2,7 @@
   "profiles": {
     "jvmcsharp": {
       "commandName": "Project",
-      "commandLineArgs": "-Xjre \"D:\\Env\\jdk\\jdk8u392-b08\\jre\" java.lang.Object"
+      "commandLineArgs": "-Xjre \"D:\\Env\\jdk\\zulu8.74.0.17-ca-fx-jdk8.0.392-win_x64\\jre\" java.lang.String"
     }
   }
 }

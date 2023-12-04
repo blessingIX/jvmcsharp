@@ -1,13 +1,13 @@
 ﻿namespace jvmcsharp
 {
-    internal struct Cmd
+    internal class Cmd
     {
-        public bool HelpFlag { get; private set; }
-        public bool VersionFlag { get; private set; }
-        public string CpOption { get; private set; }
-        public string XjreOption { get; private set; }
-        public string Class { get; private set; }
-        public string[] Args { get; private set; }
+        public bool HelpFlag { get; internal set; }
+        public bool VersionFlag { get; internal set; }
+        public string CpOption { get; internal set; } = string.Empty;
+        public string XjreOption { get; internal set; } = string.Empty;
+        public string Class { get; internal set; } = string.Empty;
+        public string[] Args { get; internal set; } = [];
 
         internal static Cmd ParseCmd()
         {
