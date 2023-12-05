@@ -4,7 +4,7 @@
     {
         public ConstantPool Cp { get; internal set; } = new();
         public ushort MaxStack { get; internal set; }
-        public UInt128 MaxLocals { get; internal set; }
+        public ushort MaxLocals { get; internal set; }
         public byte[] Code { get; internal set; } = [];
         public ExceptionTableEntry[] ExceptionTable { get; internal set; } = [];
         public AttributeInfo[] Attributes { get; internal set; } = [];

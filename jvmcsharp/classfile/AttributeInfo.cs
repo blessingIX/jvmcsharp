@@ -27,27 +27,18 @@
 
         public static AttributeInfo Create(string attrName, uint attrLen, ConstantPool cp)
         {
-            switch (attrName)
+            return attrName switch
             {
-                case "Code":
-                    return new CodeAttribute() { Cp =  cp };
-                case "ConstantValue":
-                    return new ConstantValueAttribute();
-                case "Deprecated":
-                    return new DeprecatedAttribute();
-                case "Exceptions":
-                    return new ExceptionsAttribute();
-                case "LineNumberTable":
-                    return new LineNumberTableAttribute();
-                case "LocalVariableTable":
-                    return new LocalVariableTableAttribute();
-                case "SourceFile":
-                    return new SourceFileAttribute() { Cp = cp };
-                case "Synthetic":
-                    return new SyntheticAttribute();
-                default:
-                    return new UnparsedAttribute() { Name = attrName, Length = attrLen };
-            }
+                "Code" => new CodeAttribute() { Cp = cp },
+                "ConstantValue" => new ConstantValueAttribute(),
+                "Deprecated" => new DeprecatedAttribute(),
+                "Exceptions" => new ExceptionsAttribute(),
+                "LineNumberTable" => new LineNumberTableAttribute(),
+                "LocalVariableTable" => new LocalVariableTableAttribute(),
+                "SourceFile" => new SourceFileAttribute() { Cp = cp },
+                "Synthetic" => new SyntheticAttribute(),
+                _ => new UnparsedAttribute() { Name = attrName, Length = attrLen },
+            };
         }
     }
 }

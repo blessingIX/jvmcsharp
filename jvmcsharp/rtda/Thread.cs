@@ -9,6 +9,8 @@
 
         public Frame PopFrame() => Stack.Pop();
 
-        public Frame CurrentFrame() => Stack.Peek();
+        public Frame PeekFrame() => Stack.Peek();
+
+        public Frame CraeteFrame(ushort maxLocals, ushort maxStack) => new(this, maxLocals, maxStack);
     }
 }

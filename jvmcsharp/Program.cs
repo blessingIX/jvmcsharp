@@ -30,10 +30,34 @@ namespace jvmcsharp
             var className = cmd.Class.Replace(".", "/");
             var cf = LoadClass(className, cp);
             Console.WriteLine(cmd.Class);
-            PrintClassInfo(cf);
+            // PrintClassInfo(cf);
+            var mainMethod = GetMainMethod(cf);
+            if (mainMethod != null)
+            {
+                Interpretor.Interpret(mainMethod);
+            }
+            else
+            {
+                Console.WriteLine($"Main method not found in class {cmd.Class}");
+            }
+        }
 
+        static MemberInfo GetMainMethod(ClassFile classFile)
+        {
+            foreach (var method in classFile.Methods)
+            {
+                if (method.Name() == "main" && method.Descriptor() == "([Ljava/lang/String;)V")
+                {
+                    return method;
+                }
+            }
+            return null!;
+        }
+
+        static void TestRtda()
+        {
             Console.WriteLine("运行时数据区测试");
-            var frame = new Frame(100, 100);
+            var frame = new Frame(null, 100, 100);
             TestLocalVars(frame.LocalVars);
             TestOperandStack(frame.OperandStack);
         }

@@ -34,5 +34,15 @@
         public string Name() => Cp.GetUtf8(NameIndex);
 
         public string Descriptor() => Cp.GetUtf8(DescriptorIndex);
+
+        public CodeAttribute CodeAttribute()
+        {
+            foreach (var member in Attributes)
+            {
+                if (member is CodeAttribute codeAttribute)
+                    return codeAttribute;
+            }
+            return null!;
+        }
     }
 }
