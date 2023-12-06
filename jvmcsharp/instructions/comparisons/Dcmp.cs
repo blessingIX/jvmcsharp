@@ -5,9 +5,9 @@ namespace jvmcsharp.instructions.comparisons
 {
     internal class DCMPG : NoOperandsInstruction
     {
-        public override void Execute(Frame frame) => Dcmp(frame, true);
+        public override void Execute(Frame frame) => Cmp(frame, true);
 
-        public static void Dcmp(Frame frame, bool gFlag)
+        public static void Cmp(Frame frame, bool gFlag)
         {
             var stack = frame.OperandStack;
             var v2 = stack.Pop<double>();
@@ -37,6 +37,6 @@ namespace jvmcsharp.instructions.comparisons
 
     internal class DCMPL : NoOperandsInstruction
     {
-        public override void Execute(Frame frame) => DCMPG.Dcmp(frame, false);
+        public override void Execute(Frame frame) => DCMPG.Cmp(frame, false);
     }
 }

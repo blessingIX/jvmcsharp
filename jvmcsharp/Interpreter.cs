@@ -6,7 +6,7 @@ using Thread = jvmcsharp.rtda.Thread;
 
 namespace jvmcsharp
 {
-    internal class Interpretor
+    internal class Interpreter
     {
         public static void Interpret(MemberInfo methodInfo)
         {

@@ -34,7 +34,7 @@ namespace jvmcsharp
             var mainMethod = GetMainMethod(cf);
             if (mainMethod != null)
             {
-                Interpretor.Interpret(mainMethod);
+                Interpreter.Interpret(mainMethod);
             }
             else
             {

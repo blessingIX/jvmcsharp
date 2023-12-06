@@ -5,9 +5,9 @@ namespace jvmcsharp.instructions.comparisons
 {
     internal class FCMPG : NoOperandsInstruction
     {
-        public override void Execute(Frame frame) => Fcmp(frame, true);
+        public override void Execute(Frame frame) => Cmp(frame, true);
 
-        public static void Fcmp(Frame frame, bool gFlag)
+        public static void Cmp(Frame frame, bool gFlag)
         {
             var stack = frame.OperandStack;
             var v2 = stack.Pop<float>();
@@ -37,6 +37,6 @@ namespace jvmcsharp.instructions.comparisons
 
     internal class FCMPL : NoOperandsInstruction
     {
-        public override void Execute(Frame frame) => FCMPG.Fcmp(frame, false);
+        public override void Execute(Frame frame) => FCMPG.Cmp(frame, false);
     }
 }

@@ -86,7 +86,7 @@ namespace jvmcsharp.instructions.extended
                     break;
                 case 0xa9:  // ret
                     // TODO 暂未实现ret指令
-                    throw new Exception("Unsupport opcode: oxa9!");
+                    throw new Exception("Unsupport opcode: 0xa9!");
             }
         }
     }
