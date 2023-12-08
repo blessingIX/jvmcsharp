@@ -20,7 +20,7 @@ namespace jvmcsharp.instructions.references
             }
 
             var stack = frame.OperandStack;
-            var @ref = PUT_FIELD.CheckNullReference(stack);
+            var @ref = PUT_FIELD.GetNonNullReference(stack);
 
             var descriptor = field.Descriptor;
             var slotId = field.SlotId;

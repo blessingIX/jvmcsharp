@@ -38,33 +38,33 @@ namespace jvmcsharp.instructions.references
                 case 'S':
                 case 'I':
                     var intVal = stack.Pop<int>();
-                    var refIntCase = CheckNullReference(stack);
+                    var refIntCase = GetNonNullReference(stack);
                     refIntCase.Fields.Set(slotId, intVal);
                     break;
                 case 'F':
                     var floatVal = stack.Pop<float>();
-                    var refFloatCase = CheckNullReference(stack);
+                    var refFloatCase = GetNonNullReference(stack);
                     refFloatCase.Fields.Set(slotId, floatVal);
                     break;
                 case 'J':
                     var longVal = stack.Pop<long>();
-                    var refLongCase = CheckNullReference(stack);
+                    var refLongCase = GetNonNullReference(stack);
                     refLongCase.Fields.Set(slotId, longVal);
                     break;
                 case 'D':
                     var doubleVal = stack.Pop<double>();
-                    var refDoubleCase = CheckNullReference(stack);
+                    var refDoubleCase = GetNonNullReference(stack);
                     refDoubleCase.Fields.Set(slotId, doubleVal);
                     break;
                 case 'L':
                 case '[':
                     var refVal = stack.Pop<JavaObject>();
-                    var refRefCase = CheckNullReference(stack);
+                    var refRefCase = GetNonNullReference(stack);
                     refRefCase.Fields.Set(slotId, refVal);
                     break;
             }
         }
 
-        public static JavaObject CheckNullReference(OperandStack stack) => stack.Pop<JavaObject>() ?? throw new Exception("java.lang.NullPointException");
+        public static JavaObject GetNonNullReference(OperandStack stack) => stack.Pop<JavaObject>() ?? throw new Exception("java.lang.NullPointException");
     }
 }
