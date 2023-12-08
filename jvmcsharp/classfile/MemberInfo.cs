@@ -44,5 +44,17 @@
             }
             return null!;
         }
+
+        public ConstantValueAttribute ConstantValueAttribute()
+        {
+            foreach (var attrInfo in Attributes)
+            {
+                if (attrInfo is ConstantValueAttribute constantValueAttribute)
+                {
+                    return constantValueAttribute;
+                }
+            }
+            return null!;
+        }
     }
 }

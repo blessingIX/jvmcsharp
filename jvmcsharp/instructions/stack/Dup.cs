@@ -1,5 +1,6 @@
 ﻿using jvmcsharp.instructions.basis;
 using jvmcsharp.rtda;
+using jvmcsharp.rtda.heap;
 
 namespace jvmcsharp.instructions.stack
 {

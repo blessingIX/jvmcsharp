@@ -10,6 +10,8 @@
             NameIndex = reader.ReadUInt16();
         }
 
-        public override string ToString() => Cp.GetUtf8(NameIndex);
+        public string Name() => Cp.GetUtf8(NameIndex);
+
+        public override string ToString() => Name();
     }
 }

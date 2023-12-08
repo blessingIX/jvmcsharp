@@ -12,39 +12,24 @@
 
         public static ConstantInfo Create(byte tag, ConstantPool cp)
         {
-            switch (tag)
+            return tag switch
             {
-                case (byte)Tag.ConstantInteger:
-                    return new ConstantIntegerInfo();
-                case (byte)Tag.ConstantFloat:
-                    return new ConstantFloatInfo();
-                case (byte)Tag.ConstantLong:
-                    return new ConstantLongInfo();
-                case (byte)Tag.ConsantDouble:
-                    return new ConstantDoubleInfo();
-                case (byte)Tag.ConstantUtf8:
-                    return new ConstantUtf8Info();
-                case (byte)Tag.ConstantString:
-                    return new ConstantStringInfo() { Cp = cp };
-                case (byte)Tag.ConstantClass:
-                    return new ConstantClassInfo() { Cp = cp };
-                case (byte)Tag.ConstantFieldref:
-                    return new ConstantFieldrefInfo() { Cp = cp };
-                case (byte)Tag.ConstantMethodref:
-                    return new ConstantMethodrefInfo() { Cp = cp };
-                case (byte)Tag.ConstantInterfaceMethodref:
-                    return new ConstantInterfaceMethodrefInfo { Cp = cp };
-                case (byte)Tag.ConstantNameAndType:
-                    return new ConstantNameAndTypeInfo();
-                case (byte)Tag.ConstantMethodType:
-                    return new ConstantMethodTypeInfo();
-                case (byte)Tag.ConstantMethodHandle:
-                    return new ConstantMethodHandleInfo();
-                case (byte)Tag.ConstantInvokeDynamic:
-                    return new ConstantInvokeDynamicInfo();
-                default:
-                    throw new Exception("java.lang.ClassFormatError: constant pool tag!");
-            }
+                (byte)Tag.ConstantInteger => new ConstantIntegerInfo(),
+                (byte)Tag.ConstantFloat => new ConstantFloatInfo(),
+                (byte)Tag.ConstantLong => new ConstantLongInfo(),
+                (byte)Tag.ConsantDouble => new ConstantDoubleInfo(),
+                (byte)Tag.ConstantUtf8 => new ConstantUtf8Info(),
+                (byte)Tag.ConstantString => new ConstantStringInfo() { Cp = cp },
+                (byte)Tag.ConstantClass => new ConstantClassInfo() { Cp = cp },
+                (byte)Tag.ConstantFieldref => new ConstantFieldrefInfo() { Cp = cp },
+                (byte)Tag.ConstantMethodref => new ConstantMethodrefInfo() { Cp = cp },
+                (byte)Tag.ConstantInterfaceMethodref => new ConstantInterfaceMethodrefInfo { Cp = cp },
+                (byte)Tag.ConstantNameAndType => new ConstantNameAndTypeInfo(),
+                (byte)Tag.ConstantMethodType => new ConstantMethodTypeInfo(),
+                (byte)Tag.ConstantMethodHandle => new ConstantMethodHandleInfo(),
+                (byte)Tag.ConstantInvokeDynamic => new ConstantInvokeDynamicInfo(),
+                _ => throw new Exception("java.lang.ClassFormatError: constant pool tag!"),
+            };
         }
 
         public void ReadInfo(ClassReader reader);

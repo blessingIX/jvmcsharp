@@ -1,5 +1,6 @@
 ﻿using jvmcsharp.instructions.basis;
 using jvmcsharp.rtda;
+using jvmcsharp.rtda.heap;
 
 namespace jvmcsharp.instructions.comparisons
 {
@@ -8,8 +9,8 @@ namespace jvmcsharp.instructions.comparisons
         public override void Execute(Frame frame)
         {
             var stack = frame.OperandStack;
-            var v2 = stack.Pop<object>();
-            var v1 = stack.Pop<object>();
+            var v2 = stack.Pop<JavaObject>();
+            var v1 = stack.Pop<JavaObject>();
             if (ReferenceEquals(v1, v2))
             {
                 BranchLogic.Branch(frame, Offset);
@@ -22,8 +23,8 @@ namespace jvmcsharp.instructions.comparisons
         public override void Execute(Frame frame)
         {
             var stack = frame.OperandStack;
-            var v2 = stack.Pop<object>();
-            var v1 = stack.Pop<object>();
+            var v2 = stack.Pop<JavaObject>();
+            var v1 = stack.Pop<JavaObject>();
             if (!ReferenceEquals(v1, v2))
             {
                 BranchLogic.Branch(frame, Offset);

@@ -1,5 +1,6 @@
 ﻿using jvmcsharp.instructions.basis;
 using jvmcsharp.rtda;
+using jvmcsharp.rtda.heap;
 
 namespace jvmcsharp.instructions.extended
 {
@@ -7,7 +8,7 @@ namespace jvmcsharp.instructions.extended
     {
         public override void Execute(Frame frame)
         {
-            var @ref = frame.OperandStack.Pop<object>();
+            var @ref = frame.OperandStack.Pop<JavaObject>();
             if (@ref is null)
             {
                 BranchLogic.Branch(frame, Offset);
@@ -19,7 +20,7 @@ namespace jvmcsharp.instructions.extended
     {
         public override void Execute(Frame frame)
         {
-            var @ref = frame.OperandStack.Pop<object>();
+            var @ref = frame.OperandStack.Pop<JavaObject>();
             if (@ref is not null)
             {
                 BranchLogic.Branch(frame, Offset);

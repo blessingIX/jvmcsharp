@@ -1,4 +1,6 @@
-﻿namespace jvmcsharp.rtda
+﻿using jvmcsharp.rtda.heap;
+
+namespace jvmcsharp.rtda
 {
     internal class Thread
     {
@@ -11,6 +13,6 @@
 
         public Frame PeekFrame() => Stack.Peek();
 
-        public Frame CraeteFrame(ushort maxLocals, ushort maxStack) => new(this, maxLocals, maxStack);
+        public Frame CraeteFrame(Method method) => new(this, method);
     }
 }

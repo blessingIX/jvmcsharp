@@ -1,37 +1,27 @@
 ﻿using jvmcsharp.instructions;
 using jvmcsharp.instructions.basis;
-using Newtonsoft.Json;
-using MemberInfo = jvmcsharp.classfile.MemberInfo;
+using jvmcsharp.rtda.heap;
 using Thread = jvmcsharp.rtda.Thread;
 
 namespace jvmcsharp
 {
     internal class Interpreter
     {
-        public static void Interpret(MemberInfo methodInfo)
+        public static void Interpret(Method method)
         {
-            var codeAttr = methodInfo.CodeAttribute();
-            var maxLocals = codeAttr.MaxLocals;
-            var maxStack = codeAttr.MaxStack;
-            var bytecode = codeAttr.Code;
             var thread = new Thread();
-            var frame = thread.CraeteFrame(maxLocals, maxStack);
+            var frame = thread.CraeteFrame(method);
             thread.PushFrame(frame);
             try
             {
-                Loop(thread, bytecode);
+                Loop(thread, method.Code);
             }
-            /*catch (Exception ex)
-            {
-                if (!ex.Message.StartsWith("Unsupported opcode"))
-                    throw;
-            }*/
             finally
             {
-                Console.WriteLine($"""
+                /*Console.WriteLine($"""
                     {nameof(frame.LocalVars)}: {JsonConvert.SerializeObject(frame.LocalVars)}
                     {nameof(frame.OperandStack)}: {JsonConvert.SerializeObject(frame.OperandStack)}
-                    """);
+                    """);*/
             }
         }
 
@@ -50,7 +40,7 @@ namespace jvmcsharp
                 inst.FetchOperands(reader);
                 frame.NextPc = reader.Pc;
                 // execute
-                Console.WriteLine($"pc: {pc:X4} inst: {inst.GetType().Name} {JsonConvert.SerializeObject(inst)}");
+                // Console.WriteLine($"pc: {pc:X4} inst: {inst.GetType().Name} {JsonConvert.SerializeObject(inst)}");
                 inst.Execute(frame);
             }
         }

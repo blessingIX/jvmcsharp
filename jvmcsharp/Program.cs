@@ -1,6 +1,8 @@
 ﻿using jvmcsharp.classfile;
 using jvmcsharp.classpath;
 using jvmcsharp.rtda;
+using jvmcsharp.rtda.heap;
+using Thread = jvmcsharp.rtda.Thread;
 
 namespace jvmcsharp
 {
@@ -27,11 +29,10 @@ namespace jvmcsharp
         {
             var cp = new Classpath(cmd.XjreOption, cmd.CpOption);
             Console.WriteLine($"classpath: {cp} class: {cmd.Class} args: [{string.Join(", ", cmd.Args)}]");
-            var className = cmd.Class.Replace(".", "/");
-            var cf = LoadClass(className, cp);
-            Console.WriteLine(cmd.Class);
-            // PrintClassInfo(cf);
-            var mainMethod = GetMainMethod(cf);
+            var classLoader = new ClassLoader(cp);
+            var className = cmd.Class.Replace('.', '/');
+            var mainClass = classLoader.LoadClass(className);
+            var mainMethod = mainClass.GetMainMethod();
             if (mainMethod != null)
             {
                 Interpreter.Interpret(mainMethod);
@@ -42,24 +43,12 @@ namespace jvmcsharp
             }
         }
 
-        static MemberInfo GetMainMethod(ClassFile classFile)
-        {
-            foreach (var method in classFile.Methods)
-            {
-                if (method.Name() == "main" && method.Descriptor() == "([Ljava/lang/String;)V")
-                {
-                    return method;
-                }
-            }
-            return null!;
-        }
-
         static void TestRtda()
         {
-            Console.WriteLine("运行时数据区测试");
-            var frame = new Frame(null, 100, 100);
+            /*Console.WriteLine("运行时数据区测试");
+            var frame = new Frame(null!, 100, 100);
             TestLocalVars(frame.LocalVars);
-            TestOperandStack(frame.OperandStack);
+            TestOperandStack(frame.OperandStack);*/
         }
 
         static ClassFile LoadClass(string className, Classpath cp)
@@ -93,7 +82,7 @@ namespace jvmcsharp
             localVars.Set(4, -2997924580L);
             localVars.Set(6, 3.1415626f);
             localVars.Set(7, 2.71828182845d);
-            localVars.Set<object>(9, null!);
+            localVars.Set<JavaObject>(9, null!);
             Console.WriteLine($"""
                 {localVars.Get<int>(0)}
                 {localVars.Get<int>(1)}
@@ -101,7 +90,7 @@ namespace jvmcsharp
                 {localVars.Get<long>(4)}
                 {localVars.Get<float>(6)}
                 {localVars.Get<double>(7)}
-                {localVars.Get<object>(9) ?? "null"}
+                {localVars.Get<JavaObject>(9)}
                 """);
         }
 
@@ -113,9 +102,9 @@ namespace jvmcsharp
             operandStack.Push(-2997924580L);
             operandStack.Push(3.1415626f);
             operandStack.Push(2.71828182845d);
-            operandStack.Push<object>(null!);
+            operandStack.Push<JavaObject>(null!);
             Console.WriteLine($""""
-                {operandStack.Pop<object>() ?? "null"}
+                {operandStack.Pop<JavaObject>()}
                 {operandStack.Pop<double>()}
                 {operandStack.Pop<float>()}
                 {operandStack.Pop<long>()}

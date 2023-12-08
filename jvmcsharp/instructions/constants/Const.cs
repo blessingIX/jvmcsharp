@@ -1,11 +1,12 @@
 ﻿using jvmcsharp.instructions.basis;
 using jvmcsharp.rtda;
+using jvmcsharp.rtda.heap;
 
 namespace jvmcsharp.instructions.constants
 {
     internal class ACONST_NULL : NoOperandsInstruction  
     {
-        public override void Execute(Frame frame) => frame.OperandStack.Push<object>(null!);
+        public override void Execute(Frame frame) => frame.OperandStack.Push<JavaObject>(null!);
     }
 
     internal class DCONST_0 : NoOperandsInstruction

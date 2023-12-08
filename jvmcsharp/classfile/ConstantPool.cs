@@ -2,11 +2,11 @@
 {
     internal class ConstantPool
     {
-        private ConstantInfo[] ConstantInfos { get; set; } = [];
+        public ConstantInfo[] ConstantInfos { get; internal set; } = [];
 
         public int Length => ConstantInfos.Length;
 
-        public ConstantInfo? this[int idx]
+        public ConstantInfo? this[uint idx]
         {
             get => (idx >= 0 && idx < ConstantInfos.Length) ? ConstantInfos[idx] : null;
             set => ConstantInfos[idx] = value!;
@@ -16,7 +16,7 @@
         {
             var cpCount = (int)reader.ReadUInt16();
             var cp = new ConstantPool() { ConstantInfos = new ConstantInfo[cpCount] };
-            for (int i = 1; i < cpCount; i++)
+            for (uint i = 1; i < cpCount; i++)
             {
                 cp[i] = ConstantInfo.ReadConstantInfo(reader, cp);
                 if (cp[i] is ConstantLongInfo || cp[i] is ConstantDoubleInfo)

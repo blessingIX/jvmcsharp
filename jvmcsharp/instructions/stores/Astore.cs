@@ -1,5 +1,6 @@
 ﻿using jvmcsharp.instructions.basis;
 using jvmcsharp.rtda;
+using jvmcsharp.rtda.heap;
 
 namespace jvmcsharp.instructions.stores
 {
@@ -7,7 +8,7 @@ namespace jvmcsharp.instructions.stores
     {
         public static void Store(Frame frame, uint index)
         {
-            var @ref = frame.OperandStack.Pop<object>();
+            var @ref = frame.OperandStack.Pop<JavaObject>();
             frame.LocalVars.Set(index, @ref);
         }
 

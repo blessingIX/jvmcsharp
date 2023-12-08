@@ -1,5 +1,6 @@
 ﻿using jvmcsharp.instructions.basis;
 using jvmcsharp.rtda;
+using jvmcsharp.rtda.heap;
 
 namespace jvmcsharp.instructions.loads
 {
@@ -7,7 +8,7 @@ namespace jvmcsharp.instructions.loads
     {
         public static void Load(Frame frame, uint index)
         {
-            var val = frame.LocalVars.Get<object>(index);
+            var val = frame.LocalVars.Get<JavaObject>(index);
             frame.OperandStack.Push(val);
         }
 
