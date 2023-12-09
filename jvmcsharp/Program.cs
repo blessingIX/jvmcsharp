@@ -2,7 +2,6 @@
 using jvmcsharp.classpath;
 using jvmcsharp.rtda;
 using jvmcsharp.rtda.heap;
-using Thread = jvmcsharp.rtda.Thread;
 
 namespace jvmcsharp
 {

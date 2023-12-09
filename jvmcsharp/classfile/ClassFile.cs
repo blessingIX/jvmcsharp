@@ -12,7 +12,7 @@
         public ushort[] Interfaces { get; internal set; } = [];
         public MemberInfo[] Fileds { get; internal set; } = [];
         public MemberInfo[] Methods { get; internal set; } = [];
-        public AttributeInfo[] Attribute { get; internal set; } = [];
+        public AttributeInfo[] Attributes { get; internal set; } = [];
 
         public ClassFile(byte[] classData) => Read(new ClassReader(classData));
 
@@ -27,7 +27,7 @@
             Interfaces = reader.ReadUInt16s();
             Fileds = MemberInfo.ReadMembers(reader, ConstantPool);
             Methods = MemberInfo.ReadMembers(reader, ConstantPool);
-            Attribute = AttributeInfo.ReadAttributes(reader, ConstantPool);
+            Attributes = AttributeInfo.ReadAttributes(reader, ConstantPool);
         }
 
         private void ReadAndCheckMagic(ClassReader reader)

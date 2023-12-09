@@ -72,6 +72,8 @@ namespace jvmcsharp.rtda.heap
             @class.StaticVars = new(@class.StaticSlotCount);
             foreach (var field in @class.Fields)
             {
+                // TODO 这里只对静态且final的字段进行初始化，非final的静态字段却没初始化
+                // 猜测：这里是使用Field的ConstValueIndex（常量值索引）去找常量为字段赋值，只有静态且final的字段才是常量，在常量池中才有记录
                 if (field.IsStatic() && field.IsFinal())
                 {
                     InitStaticFinalVar(@class, field);
@@ -136,8 +138,7 @@ namespace jvmcsharp.rtda.heap
         {
             try
             {
-                var cf = new ClassFile(data);
-                return new Class(cf);
+                return new Class(new ClassFile(data));
             }
             catch (Exception)
             {
@@ -149,8 +150,7 @@ namespace jvmcsharp.rtda.heap
         {
             try
             {
-                var (data, entry) = Cp.ReadClass(name);
-                return (data, entry);
+                return Cp.ReadClass(name);
             }
             catch (Exception)
             {

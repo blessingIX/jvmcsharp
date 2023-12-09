@@ -7,7 +7,7 @@
             var baseDir = pathList[0..^1];
             foreach (var path in Directory.GetFiles(baseDir))
             {
-                if (path.EndsWith(".jar", StringComparison.CurrentCultureIgnoreCase))
+                if (path.EndsWith(value: ".jar", StringComparison.CurrentCultureIgnoreCase))
                 {
                     var jarEntry = new ZipEntry(path);
                     Entries.Add(jarEntry);

@@ -8,7 +8,7 @@ namespace jvmcsharp.instructions.references
     {
         public override void Execute(Frame frame)
         {
-            var cp = frame.Method.Class.ConstantPool;
+            var cp = frame.Method.Class!.ConstantPool;
             var classRef = cp.Get<ClassRef>(Index);
             var @class = classRef.ResolveClass();
             if (@class.IsInterface() || @class.IsAbstract())

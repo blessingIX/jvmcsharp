@@ -5,7 +5,7 @@ namespace jvmcsharp.instructions.constants
 {
     internal class BIPUSH : Instruction
     {
-        public byte Val { get; internal set; }
+        public sbyte Val { get; internal set; }
 
         public override void Execute(Frame frame)
         {

@@ -15,5 +15,7 @@ public class MyObject {
             myObject = (MyObject) object;   // checkcast
             System.out.println(myObject.instanceVar);
         }
+        int c = -29;
+        System.out.println(c);
     }
 }

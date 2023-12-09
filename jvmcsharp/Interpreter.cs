@@ -1,6 +1,7 @@
 ﻿using jvmcsharp.instructions;
 using jvmcsharp.instructions.basis;
 using jvmcsharp.rtda.heap;
+using Newtonsoft.Json;
 using Thread = jvmcsharp.rtda.Thread;
 
 namespace jvmcsharp
@@ -40,7 +41,7 @@ namespace jvmcsharp
                 inst.FetchOperands(reader);
                 frame.NextPc = reader.Pc;
                 // execute
-                // Console.WriteLine($"pc: {pc:X4} inst: {inst.GetType().Name} {JsonConvert.SerializeObject(inst)}");
+                Console.WriteLine($"pc: {pc:X4} inst: {inst.GetType().Name} {JsonConvert.SerializeObject(inst)}");
                 inst.Execute(frame);
             }
         }

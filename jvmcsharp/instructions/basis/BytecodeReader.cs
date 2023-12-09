@@ -13,10 +13,7 @@ namespace jvmcsharp.instructions.basis
             Pc = pc;
         }
 
-        public byte ReadInt8()
-        {
-            return ReadUInt8();
-        }
+        public sbyte ReadInt8() => (sbyte)ReadUInt8();
 
         public byte ReadUInt8()
         {
@@ -25,10 +22,7 @@ namespace jvmcsharp.instructions.basis
             return i;
         }
 
-        public short ReadInt16()
-        {
-            return (short)ReadUInt16();
-        }
+        public short ReadInt16() => (short)ReadUInt16();
 
         public ushort ReadUInt16()
         {

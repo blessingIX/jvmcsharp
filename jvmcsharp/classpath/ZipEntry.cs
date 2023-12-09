@@ -14,7 +14,7 @@ namespace jvmcsharp.classpath
                 {
                     if (entry.FullName != className) continue;
                     using var stream = entry.Open();
-                    using var reader = new BinaryReader(stream);
+                    using BinaryReader? reader = new(stream);
                     return (reader.ReadBytes((int)stream.Length), this);
                 }
             }
