@@ -1,4 +1,6 @@
-﻿namespace jvmcsharp.rtda
+﻿using jvmcsharp.rtda.heap;
+
+namespace jvmcsharp.rtda
 {
     internal class OperandStack(uint maxStack)
     {
@@ -19,5 +21,7 @@
                 Slot[Size] = null!;
             return val!;
         }
+
+        internal JavaObject GetRefFromTop(uint n) => (JavaObject)Slot[Size - 1 - n];
     }
 }

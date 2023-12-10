@@ -5,6 +5,6 @@ namespace jvmcsharp.instructions.control
 {
     internal class GOTO : BranchInstruction
     {
-        public override void Execute(Frame frame) => BranchLogic.Branch(frame, Offset);
+        public override void Execute(Frame frame) => CommonLogic.Branch(frame, Offset);
     }
 }

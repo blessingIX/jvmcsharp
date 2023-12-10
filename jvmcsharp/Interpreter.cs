@@ -1,5 +1,6 @@
 ﻿using jvmcsharp.instructions;
 using jvmcsharp.instructions.basis;
+using jvmcsharp.rtda;
 using jvmcsharp.rtda.heap;
 using Newtonsoft.Json;
 using Thread = jvmcsharp.rtda.Thread;
@@ -8,41 +9,66 @@ namespace jvmcsharp
 {
     internal class Interpreter
     {
-        public static void Interpret(Method method)
+        public static void Interpret(Method method, bool logInst)
         {
             var thread = new Thread();
             var frame = thread.CraeteFrame(method);
             thread.PushFrame(frame);
             try
             {
-                Loop(thread, method.Code);
+                Loop(thread, logInst);
             }
-            finally
+            catch (Exception)
             {
-                /*Console.WriteLine($"""
-                    {nameof(frame.LocalVars)}: {JsonConvert.SerializeObject(frame.LocalVars)}
-                    {nameof(frame.OperandStack)}: {JsonConvert.SerializeObject(frame.OperandStack)}
-                    """);*/
+                LogFrames(thread);
+                throw;
             }
         }
 
-        public static void Loop(Thread thread, byte[] bytecode)
+        public static void Loop(Thread thread, bool logInst)
         {
-            var frame = thread.PopFrame();
             var reader = new BytecodeReader();
             while (true)
             {
+                var frame = thread.PeekFrame();
                 var pc = frame.NextPc;
                 thread.Pc = pc;
                 // decode
-                reader.Reset(bytecode, pc);
+                reader.Reset(frame.Method.Code, pc);
                 var opcode = reader.ReadUInt8();
                 Instruction inst = InstructionFactory.Create(opcode);
                 inst.FetchOperands(reader);
                 frame.NextPc = reader.Pc;
+                if (logInst)
+                {
+                    LogInstruction(frame, inst);
+                }
                 // execute
-                Console.WriteLine($"pc: {pc:X4} inst: {inst.GetType().Name} {JsonConvert.SerializeObject(inst)}");
                 inst.Execute(frame);
+                if (thread.IsStackEmpty())
+                {
+                    break;
+                }
+            }
+        }
+
+        private static void LogInstruction(Frame frame, Instruction inst)
+        {
+            var method = frame.Method;
+            var className = method.Class!.Name;
+            var methodName = method.Name;
+            var pc = frame.Thread.Pc;
+            Console.WriteLine($"{className}.{methodName}() #{pc} {inst.GetType().Name} {JsonConvert.SerializeObject(inst)}");
+        }
+
+        private static void LogFrames(Thread thread)
+        {
+            while (!thread.IsStackEmpty())
+            {
+                var frame = thread.PopFrame();
+                var method = frame.Method;
+                var className = method.Class!.Name;
+                Console.WriteLine($">> pc: {frame.NextPc} {className} {method.Name} {method.Descriptor}");
             }
         }
     }

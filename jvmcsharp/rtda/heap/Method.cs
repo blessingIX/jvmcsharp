@@ -8,6 +8,7 @@ namespace jvmcsharp.rtda.heap
         public ushort MaxStack { get; internal set; }
         public ushort MaxLocals { get; internal set; }
         public byte[] Code { get; internal set; } = [];
+        public uint ArgSlotCount { get; internal set; }
 
         public Method(MemberInfo memberInfo) : base(memberInfo)
         {
@@ -22,7 +23,12 @@ namespace jvmcsharp.rtda.heap
         }
 
         public static Method[] CreateMethods(Class @class, MemberInfo[] cfMethods)
-            => cfMethods.Select(cfMethod => new Method(cfMethod) { Class = @class }).ToArray();
+            => cfMethods.Select(cfMethod =>
+            {
+                var method = new Method(cfMethod) { Class = @class };
+                method.CalcArgSlotCount();
+                return method;
+            }).ToArray();
 
         public bool IsSynchronized() => 0 != (AccessFlags & ACC_SYNCHRONIZED);
 
@@ -35,5 +41,18 @@ namespace jvmcsharp.rtda.heap
         public bool IsAbstract() => 0 != (AccessFlags & ACC_ABSTRACT);
 
         public bool IsStrict() => 0 != (AccessFlags & ACC_STRICT);
+
+        private void CalcArgSlotCount()
+        {
+            var parsedDescriptor = MethodDescriptorParser.ParseMethodDescriptor(Descriptor);
+            foreach (var _ in parsedDescriptor.ParameterTypes)
+            {
+                ArgSlotCount++;
+            }
+            if (!IsStatic())
+            {
+                ArgSlotCount++;
+            }
+        }
     }
 }

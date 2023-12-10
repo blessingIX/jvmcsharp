@@ -12,7 +12,7 @@ namespace jvmcsharp.instructions.comparisons
             var v1 = stack.Pop<int>();
             if (v1 == v2)
             {
-                BranchLogic.Branch(frame, Offset);
+                CommonLogic.Branch(frame, Offset);
             }
         }
     }
@@ -26,7 +26,7 @@ namespace jvmcsharp.instructions.comparisons
             var v1 = stack.Pop<int>();
             if (v1 != v2)
             {
-                BranchLogic.Branch(frame, Offset);
+                CommonLogic.Branch(frame, Offset);
             }
         }
     }
@@ -40,7 +40,7 @@ namespace jvmcsharp.instructions.comparisons
             var v1 = stack.Pop<int>();
             if (v1 < v2)
             {
-                BranchLogic.Branch(frame, Offset);
+                CommonLogic.Branch(frame, Offset);
             }
         }
     }
@@ -54,7 +54,7 @@ namespace jvmcsharp.instructions.comparisons
             var v1 = stack.Pop<int>();
             if (v1 <= v2)
             {
-                BranchLogic.Branch(frame, Offset);
+                CommonLogic.Branch(frame, Offset);
             }
         }
     }
@@ -68,7 +68,7 @@ namespace jvmcsharp.instructions.comparisons
             var v1 = stack.Pop<int>();
             if (v1 > v2)
             {
-                BranchLogic.Branch(frame, Offset);
+                CommonLogic.Branch(frame, Offset);
             }
         }
     }
@@ -82,7 +82,7 @@ namespace jvmcsharp.instructions.comparisons
             var v1 = stack.Pop<int>();
             if (v1 >= v2)
             {
-                BranchLogic.Branch(frame, Offset);
+                CommonLogic.Branch(frame, Offset);
             }
         }
     }

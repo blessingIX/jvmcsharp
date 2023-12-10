@@ -4,6 +4,8 @@
     {
         public bool HelpFlag { get; internal set; }
         public bool VersionFlag { get; internal set; }
+        public bool VerboseClassFlag { get; internal set; }
+        public bool VerboseInstFlag { get; internal set; }
         public string CpOption { get; internal set; } = string.Empty;
         public string XjreOption { get; internal set; } = string.Empty;
         public string Class { get; internal set; } = string.Empty;
@@ -15,6 +17,8 @@
             var args = Environment.GetCommandLineArgs().Skip(1).ToList();
             Var(args, ["help", "?"], false, v => cmd.HelpFlag = v);
             Var(args, ["version"], false, v => cmd.VersionFlag = v);
+            Var(args, ["verbose:class"], false, v => cmd.VerboseClassFlag = v);
+            Var(args, ["verbose:inst"], false, v => cmd.VerboseInstFlag = v);
             Var(args, ["classpath", "cp"], string.Empty, v => cmd.CpOption = v);
             Var(args, ["Xjre"], string.Empty, v => cmd.XjreOption = v);
             if (args.Count > 0)

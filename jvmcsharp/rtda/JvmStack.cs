@@ -41,5 +41,7 @@
             }
             return Top;
         }
+
+        public bool IsEmpty() => Top == null;
     }
 }

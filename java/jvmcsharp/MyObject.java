@@ -10,9 +10,9 @@ public class MyObject {
         * -32768~32767 => sipush
         * -2147483648~2147483647 => ldc
         * */
-        int a = 5;
-        int b = 127;
-        int c = 32767;
+        int a = 5;      // iconst
+        int b = 127;    // bipush
+        int c = 32767;  // sipush
         int x = 32768;  // ldc
         MyObject myObject = new MyObject(); // new
         MyObject.staticVar = x; // putstatic

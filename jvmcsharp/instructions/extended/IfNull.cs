@@ -11,7 +11,7 @@ namespace jvmcsharp.instructions.extended
             var @ref = frame.OperandStack.Pop<JavaObject>();
             if (@ref is null)
             {
-                BranchLogic.Branch(frame, Offset);
+                CommonLogic.Branch(frame, Offset);
             }
         }
     }
@@ -23,7 +23,7 @@ namespace jvmcsharp.instructions.extended
             var @ref = frame.OperandStack.Pop<JavaObject>();
             if (@ref is not null)
             {
-                BranchLogic.Branch(frame, Offset);
+                CommonLogic.Branch(frame, Offset);
             }
         }
     }

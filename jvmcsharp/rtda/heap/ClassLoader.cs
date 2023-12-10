@@ -7,17 +7,24 @@ namespace jvmcsharp.rtda.heap
     {
         public Classpath Cp { get; internal set; } = classpath;
         public Dictionary<string, Class> ClassMap { get; internal set; } = [];
+        public bool VerboseFlag { get; internal set; }
 
         public Class LoadClass(string name)
             => ClassMap.TryGetValue(name, out Class? value) ? value : LoadNonArrayClass(name);
 
         private Class LoadNonArrayClass(string name)
         {
-            Console.WriteLine($"[Ready to loaded {name}]");
+            if (VerboseFlag)
+            {
+                Console.WriteLine($"[Ready to load {name}]");
+            }
             var (data, entry) = ReadClass(name);
             var @class = DefineClass(data);
             Link(@class);
-            Console.WriteLine($"[Loaded {name} from {entry}]");
+            if (VerboseFlag)
+            {
+                Console.WriteLine($"[Loaded {name} from {entry}]");
+            }
             return @class;
         }
 

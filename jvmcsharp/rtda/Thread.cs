@@ -14,5 +14,9 @@ namespace jvmcsharp.rtda
         public Frame PeekFrame() => Stack.Peek();
 
         public Frame CraeteFrame(Method method) => new(this, method);
+
+        internal Frame TopFrame() => PeekFrame();
+
+        internal bool IsStackEmpty() => Stack.IsEmpty();
     }
 }

@@ -10,7 +10,7 @@ namespace jvmcsharp.instructions.comparisons
             var val = frame.OperandStack.Pop<int>();
             if (val == 0)
             {
-                BranchLogic.Branch(frame, Offset);
+                CommonLogic.Branch(frame, Offset);
             }
         }
     }
@@ -22,7 +22,7 @@ namespace jvmcsharp.instructions.comparisons
             var val = frame.OperandStack.Pop<int>();
             if (val != 0)
             {
-                BranchLogic.Branch(frame, Offset);
+                CommonLogic.Branch(frame, Offset);
             }
         }
     }
@@ -34,7 +34,7 @@ namespace jvmcsharp.instructions.comparisons
             var val = frame.OperandStack.Pop<int>();
             if (val < 0)
             {
-                BranchLogic.Branch(frame, Offset);
+                CommonLogic.Branch(frame, Offset);
             }
         }
     }
@@ -46,7 +46,7 @@ namespace jvmcsharp.instructions.comparisons
             var val = frame.OperandStack.Pop<int>();
             if (val <= 0)
             {
-                BranchLogic.Branch(frame, Offset);
+                CommonLogic.Branch(frame, Offset);
             }
         }
     }
@@ -58,7 +58,7 @@ namespace jvmcsharp.instructions.comparisons
             var val = frame.OperandStack.Pop<int>();
             if (val > 0)
             {
-                BranchLogic.Branch(frame, Offset);
+                CommonLogic.Branch(frame, Offset);
             }
         }
     }
@@ -71,7 +71,7 @@ namespace jvmcsharp.instructions.comparisons
             var val = frame.OperandStack.Pop<int>();
             if (val >= 0)
             {
-                BranchLogic.Branch(frame, Offset);
+                CommonLogic.Branch(frame, Offset);
             }
         }
     }

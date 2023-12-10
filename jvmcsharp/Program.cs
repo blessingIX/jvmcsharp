@@ -28,13 +28,13 @@ namespace jvmcsharp
         {
             var cp = new Classpath(cmd.XjreOption, cmd.CpOption);
             Console.WriteLine($"classpath: {cp} class: {cmd.Class} args: [{string.Join(", ", cmd.Args)}]");
-            var classLoader = new ClassLoader(cp);
+            var classLoader = new ClassLoader(cp) { VerboseFlag = cmd.VerboseClassFlag };
             var className = cmd.Class.Replace('.', '/');
             var mainClass = classLoader.LoadClass(className);
             var mainMethod = mainClass.GetMainMethod();
             if (mainMethod != null)
             {
-                Interpreter.Interpret(mainMethod);
+                Interpreter.Interpret(mainMethod, cmd.VerboseInstFlag);
             }
             else
             {

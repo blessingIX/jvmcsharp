@@ -124,5 +124,7 @@ namespace jvmcsharp.rtda.heap
             }
             return null!;
         }
+
+        public bool IsSuperClassOf(Class other) => other.IsSubClassOf(this);
     }
 }

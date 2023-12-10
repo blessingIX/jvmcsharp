@@ -18,7 +18,7 @@ namespace jvmcsharp.instructions.control
             {
                 offset = JumpOffsets[index - Low];
             }
-            BranchLogic.Branch(frame, offset);
+            CommonLogic.Branch(frame, offset);
         }
 
         public override void FetchOperands(BytecodeReader reader)

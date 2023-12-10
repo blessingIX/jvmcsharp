@@ -21,7 +21,7 @@ namespace jvmcsharp.instructions.control
                     break;
                 }
             }
-            BranchLogic.Branch(frame, offset);
+            CommonLogic.Branch(frame, offset);
         }
 
         public override void FetchOperands(BytecodeReader reader)
