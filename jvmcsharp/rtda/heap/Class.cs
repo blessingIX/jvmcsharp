@@ -111,7 +111,11 @@ namespace jvmcsharp.rtda.heap
             return false;
         }
 
-        public Method GetMainMethod() => GetStaticMethod("main", "([Ljava/lang/String;)V");
+        public Method GetMainMethod() {
+            var method = GetStaticMethod("main", "([Ljava/lang/String;)V");
+            if (method != null && (!method.IsPublic() || !method.IsStatic())) method = null;
+            return method!;
+        }
 
         public Method GetStaticMethod(string name, string descriptor)
         {
