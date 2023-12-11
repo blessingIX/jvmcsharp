@@ -10,7 +10,17 @@ namespace jvmcsharp.rtda.heap
         public bool VerboseFlag { get; internal set; }
 
         public Class LoadClass(string name)
-            => ClassMap.TryGetValue(name, out Class? value) ? value : LoadNonArrayClass(name);
+        {
+            if (ClassMap.TryGetValue(name, out Class? value))
+            {
+                return value;
+            }
+            if (name[0] == '[')
+            {
+                return LoadArrayClass(name);
+            }
+            return LoadNonArrayClass(name);
+        }
 
         private Class LoadNonArrayClass(string name)
         {
@@ -25,6 +35,24 @@ namespace jvmcsharp.rtda.heap
             {
                 Console.WriteLine($"[Loaded {name} from {entry}]");
             }
+            return @class;
+        }
+
+        private Class LoadArrayClass(string name)
+        {
+            var @class = new Class
+            {
+                AccessFlags = AccessFlags.ACC_PUBLIC,
+                Name = name,
+                Loader = this,
+                InitStarted = true,
+                SuperClass = LoadClass("java/lang/Object"),
+                Interfaces = [
+                    LoadClass("java/lang/Cloneable"),
+                    LoadClass("java/io/Serializable"),
+                ],
+            };
+            ClassMap[name] = @class;
             return @class;
         }
 

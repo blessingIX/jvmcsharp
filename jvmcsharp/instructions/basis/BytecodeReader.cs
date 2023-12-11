@@ -24,8 +24,8 @@
 
         public ushort ReadUInt16()
         {
-            var byte1 = ReadUInt8();
-            var byte2 = ReadUInt8();
+            var byte1 = (ushort)ReadUInt8();
+            var byte2 = (ushort)ReadUInt8();
             return (ushort)(byte1 << 8 | byte2);
         }
 

@@ -1,11 +1,24 @@
 ﻿
 namespace jvmcsharp.rtda.heap
 {
-    internal class JavaObject(Class @class)
+    internal class JavaObject
     {
-        public Class Class { get; internal set; } = @class;
-        public LocalVars Fields { get; internal set; } = new LocalVars(@class.InstanceSlotCount);
+        public Class Class { get; internal set; }
+        public object Data { get; internal set; }
+        public LocalVars Fields => (LocalVars)Data;
 
-        internal bool IsInstanceOf(Class @class) => @class.IsAssignableFrom(Class);
+        protected JavaObject()
+        {
+            Class = null!;
+            Data = null!;
+        }
+
+        public JavaObject(Class @class)
+        {
+            Class = @class;
+            Data = new LocalVars(@class.InstanceSlotCount);
+        }
+
+        public bool IsInstanceOf(Class @class) => @class.IsAssignableFrom(Class);
     }
 }

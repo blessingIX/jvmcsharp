@@ -54,33 +54,37 @@ namespace jvmcsharp.instructions.references
             var stack = frame.OperandStack;
             switch (methodRef.Descriptor)
             {
-                case "(Z)V":
-                    Console.WriteLine(stack.Pop<int>() != 0);
+                case "(Z)V":    // boolean
+                    // Java: true/false
+                    // C#: True/False
+                    Console.WriteLine(stack.Pop<int>() != 0 ? "true" : "false");
                     break;
-                case "(C)V":
+                case "(C)V":    // char
                     Console.WriteLine(stack.Pop<int>());
                     break;
-                case "(B)V":
+                case "(B)V":    // byte
                     Console.WriteLine(stack.Pop<int>());
                     break;
-                case "(S)V":
+                case "(S)V":    // short
                     Console.WriteLine(stack.Pop<int>());
                     break;
-                case "(I)V":
+                case "(I)V":    // int
                     Console.WriteLine(stack.Pop<int>());
                     break;
-                case "(J)V":
+                case "(J)V":    // long
                     Console.WriteLine(stack.Pop<long>());
                     break;
-                case "(F)V":
+                case "(F)V":    // float
                     Console.WriteLine(stack.Pop<float>());
                     break;
-                case "(D)V":
+                case "(D)V":    // double
                     Console.WriteLine(stack.Pop<double>());
                     break;
                 default:
                     throw new Exception($"println: {methodRef.Descriptor}");
             }
+            // fix: System.out从操作数栈中弹出
+            stack.Pop<JavaObject>();
         }
     }
 }

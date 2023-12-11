@@ -20,6 +20,23 @@ namespace jvmcsharp.rtda.heap
         public LocalVars StaticVars { get; internal set; } = new(0);
         public bool InitStarted { get; internal set; }
 
+        private static readonly Dictionary<string, string> PrivitiveTypes = new()
+        {
+            { "void", "V" },
+            { "boolean", "Z" },
+            { "byte", "B" },
+            { "short", "S" },
+            { "int", "I" },
+            { "long", "J" },
+            { "char", "C" },
+            { "float", "F" },
+            { "double", "D" },
+        };
+
+#pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑声明为可以为 null。
+        internal Class() {}
+#pragma warning restore CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑声明为可以为 null。
+
         public Class(ClassFile cf)
         {
             AccessFlags = cf.AccessFlags;
@@ -63,15 +80,70 @@ namespace jvmcsharp.rtda.heap
             {
                 return true;
             }
-            if (!IsInterface())
+            if (!other.IsArray())
             {
-                return other.IsSubClassOf(this);
+                if (!other.IsInterface())
+                {
+                    if (IsInterface())
+                    {
+                        return other.IsSubClassOf(this);
+                    }
+                    else
+                    {
+                        return other.IsImplements(this);
+                    }
+                }
+                else
+                {
+                    if (!IsInterface())
+                    {
+                        return IsJlObject();
+                    }
+                    else
+                    {
+                        return IsSuperInterfaceOf(other);
+                    }
+                }
             }
             else
             {
-                return other.IsImplements(this);
+                if (IsArray())
+                {
+                    if (!IsInterface())
+                    {
+                        return IsJlObject();
+                    }
+                    else
+                    {
+                        return IsJlCloneable() || IsJioSerializable();
+                    }
+                }
+                else
+                {
+                    var sc = other.ComponentClass();
+                    var tc = ComponentClass();
+                    return sc == tc || tc.IsAssignableFrom(sc);
+                }
             }
         }
+
+        private bool IsSuperInterfaceOf(Class iface)
+        {
+            foreach (var superInterface in Interfaces)
+            {
+                if (superInterface == iface || superInterface.IsSubInterfaceOf(iface))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool IsJlObject() => Name == "java/lang/Object";
+
+        private bool IsJlCloneable() => Name == "java/lang/Cloneable";
+
+        private bool IsJioSerializable() => Name == "java/io/Serializable";
 
         public bool IsSubClassOf(Class other)
         {
@@ -137,5 +209,80 @@ namespace jvmcsharp.rtda.heap
         public void StartInit() => InitStarted = true;
 
         public Method GetClinitMethod() => GetStaticMethod("<clinit>", "()V");
+
+        public ArrayObject NewArray(uint count)
+        {
+            if (!IsArray())
+            {
+                throw new Exception($"Not array class: {Name}");
+            }
+            return Name switch
+            {
+                "[Z" => new ArrayObject { Class = this, Data = new sbyte[count] },
+                "[B" => new ArrayObject { Class = this, Data = new sbyte[count] },
+                "[C" => new ArrayObject { Class = this, Data = new short[count] },
+                "[S" => new ArrayObject { Class = this, Data = new short[count] },
+                "[I" => new ArrayObject { Class = this, Data = new int[count] },
+                "[J" => new ArrayObject { Class = this, Data = new long[count] },
+                "[F" => new ArrayObject { Class = this, Data = new float[count] },
+                "[D" => new ArrayObject { Class = this, Data = new double[count] },
+                _ => new ArrayObject { Class = this, Data = new JavaObject[count] },
+            };
+        }
+
+        public bool IsArray() => Name[0] == '[';
+
+        public Class ArrayClass()
+        {
+            var arrayClassName = GetArrayClassName(Name);
+            return Loader!.LoadClass(arrayClassName);
+        }
+
+        public static string GetArrayClassName(string name) => $"[{ToDescritptor(name)}";
+
+        private static string ToDescritptor(string name)
+        {
+            if (name[0] == '[')
+            {
+                return name;
+            }
+            if (PrivitiveTypes.TryGetValue(name, out var type))
+            {
+                return type;
+            }
+            return $"L{name}";
+        }
+
+        public Class ComponentClass() => Loader!.LoadClass(GetComponentClassName(Name));
+
+        private static string GetComponentClassName(string name)
+        {
+            if (name[0] == '[')
+            {
+                var componentTypeDescriptor = name[1..^0];
+                return ToClassName(componentTypeDescriptor);
+            }
+            throw new Exception($"Not array: {name}");
+        }
+
+        private static string ToClassName(string descriptor)
+        {
+            if (descriptor[0] == '[')   // array
+            {
+                return descriptor;
+            }
+            if (descriptor[0] == 'L')   // object
+            {
+                return descriptor[1..^1];
+            }
+            foreach (var (className, d) in PrivitiveTypes)
+            {
+                if (d == descriptor)    // primitive
+                {
+                    return className;
+                }
+            }
+            throw new Exception($"Invalid descriptor: {descriptor}");
+        }
     }
 }

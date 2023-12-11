@@ -15,14 +15,14 @@ namespace jvmcsharp.rtda.heap
         {
             if (Field == null)
             {
-                ResolveFiledRef();
+                ResolveFieldRef();
             }
             return Field!;
         }
 
-        private void ResolveFiledRef()
+        private void ResolveFieldRef()
         {
-            var d = Cp.Class;
+            var d = Cp!.Class;
             var c = ResolveClass();
             var field = LookupField(c, Name, Descriptor) ?? throw new Exception("java.lang.NoSuchFieldError");
             if (!field.IsAccessibleTo(d))
