@@ -34,7 +34,7 @@ namespace jvmcsharp
             var mainMethod = mainClass.GetMainMethod();
             if (mainMethod != null)
             {
-                Interpreter.Interpret(mainMethod, cmd.VerboseInstFlag);
+                Interpreter.Interpret(mainMethod, cmd.VerboseInstFlag, cmd.Args);
             }
             else
             {

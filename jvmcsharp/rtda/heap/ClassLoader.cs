@@ -1,5 +1,6 @@
 ﻿using jvmcsharp.classfile;
 using jvmcsharp.classpath;
+using jvmcsharp.instructions.references;
 
 namespace jvmcsharp.rtda.heap
 {
@@ -143,7 +144,10 @@ namespace jvmcsharp.rtda.heap
                         vars.Set(slotId, cp.Get<double>(cpIndex));
                         break;
                     case "Ljava/lang/String":
-                        throw new Exception("TODO Ljava/lang/String");
+                        var csString = cp.Get<string>(cpIndex);
+                        var jString = StringPool.JavaString(@class.Loader!, csString);
+                        vars.Set(slotId, jString);
+                        break;
                 }
             }
         }

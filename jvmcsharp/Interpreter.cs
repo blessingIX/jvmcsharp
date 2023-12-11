@@ -1,5 +1,6 @@
 ﻿using jvmcsharp.instructions;
 using jvmcsharp.instructions.basis;
+using jvmcsharp.instructions.references;
 using jvmcsharp.rtda;
 using jvmcsharp.rtda.heap;
 using Newtonsoft.Json;
@@ -9,11 +10,13 @@ namespace jvmcsharp
 {
     internal class Interpreter
     {
-        public static void Interpret(Method method, bool logInst)
+        public static void Interpret(Method method, bool logInst, string[] args)
         {
             var thread = new Thread();
             var frame = thread.CraeteFrame(method);
             thread.PushFrame(frame);
+            var jArgs = CreateArgsArray(method.Class!.Loader!, args);
+            frame.LocalVars.Set<JavaObject>(0, jArgs);
             try
             {
                 Loop(thread, logInst);
@@ -70,6 +73,18 @@ namespace jvmcsharp
                 var className = method.Class!.Name;
                 Console.WriteLine($">> pc: {frame.NextPc} {className} {method.Name} {method.Descriptor}");
             }
+        }
+
+        private static ArrayObject CreateArgsArray(ClassLoader loader, string[] args)
+        {
+            var stringClass = loader.LoadClass("java/lang/String");
+            var argsArr = stringClass.ArrayClass().NewArray((uint)args.Length);
+            var jArgs = argsArr.Refs;
+            for (int i = 0; i < jArgs.Length; i++)
+            {
+                jArgs[i] = StringPool.JavaString(loader, args[i]);
+            }
+            return argsArr;
         }
     }
 }

@@ -2,25 +2,35 @@
 {
     internal class ConstantMethodTypeInfo : ConstantInfo
     {
+        public ushort DescriptorIndex { get; internal set; }
+
         public void ReadInfo(ClassReader reader)
         {
-            throw new NotImplementedException();
+            DescriptorIndex = reader.ReadUInt16();
         }
     }
 
     internal class ConstantMethodHandleInfo : ConstantInfo
     {
+        public byte ReferenceKind { get; internal set; }
+        public ushort ReferenceIndex { get; internal set; }
+
         public void ReadInfo(ClassReader reader)
         {
-            throw new NotImplementedException();
+            ReferenceKind = reader.ReadUInt8();
+            ReferenceIndex = reader.ReadUInt16();
         }
     }
 
     internal class ConstantInvokeDynamicInfo : ConstantInfo
     {
+        public ushort BootstrapMethodAttrIndex { get; internal set; }
+        public ushort NameAndTypeIndex { get; internal set; }
+
         public void ReadInfo(ClassReader reader)
         {
-            throw new NotImplementedException();
+            BootstrapMethodAttrIndex = reader.ReadUInt16();
+            NameAndTypeIndex = reader.ReadUInt16();
         }
     }
 }

@@ -284,5 +284,22 @@ namespace jvmcsharp.rtda.heap
             }
             throw new Exception($"Invalid descriptor: {descriptor}");
         }
+
+        public Field GetField(string name, string descriptor, bool isStatic)
+        {
+            for (var c = this; c != null; c = c.SuperClass)
+            {
+                foreach (var field in c.Fields)
+                {
+                    if (field.IsStatic() == isStatic
+                        && field.Name == name
+                        && field.Descriptor == descriptor)
+                    {
+                        return field;
+                    }
+                }
+            }
+            return null!;
+        }
     }
 }

@@ -80,6 +80,13 @@ namespace jvmcsharp.instructions.references
                 case "(D)V":    // double
                     Console.WriteLine(stack.Pop<double>());
                     break;
+                case "(Ljava/lang/String;)V":
+                    var jString = stack.Pop<JavaObject>();
+                    var charArr = (ArrayObject)jString.GetRefVar("value", "[C");
+                    // Java和C#中字符串都是UTF-16编码，无需转换字符编码
+                    var chars = charArr.Chars.Select(x => (char)x).ToArray();
+                    Console.WriteLine(new string(chars));
+                    break;
                 default:
                     throw new Exception($"println: {methodRef.Descriptor}");
             }
