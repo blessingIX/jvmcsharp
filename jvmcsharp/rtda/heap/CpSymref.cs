@@ -3,9 +3,9 @@ namespace jvmcsharp.rtda.heap
 {
     internal class SymRef
     {
-        public ConstantPool Cp { get; internal set; }
+        public ConstantPool? Cp { get; internal set; }
         public string ClassName { get; internal set; } = string.Empty;
-        public Class Class { get; internal set; }
+        public Class? Class { get; internal set; }
 
         public Class ResolveClass()
         {
@@ -13,13 +13,13 @@ namespace jvmcsharp.rtda.heap
             {
                 ResolveClassRef();
             }
-            return Class;
+            return Class!;
         }
 
         private void ResolveClassRef()
         {
-            var d = Cp.Class;
-            var c = d.Loader.LoadClass(ClassName);
+            var d = Cp!.Class;
+            var c = d.Loader!.LoadClass(ClassName);
             if (!c.IsAccessibleTo(d))
             {
                 throw new Exception("java.lang.IllegalAccessError");

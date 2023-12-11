@@ -19,7 +19,7 @@ namespace jvmcsharp.rtda.heap
 
         private void ResolveMethodRef()
         {
-            var d = Cp.Class!;
+            var d = Cp!.Class!;
             var c = ResolveClass();
             if (c.IsInterface())
             {

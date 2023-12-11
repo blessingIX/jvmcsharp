@@ -11,6 +11,12 @@ namespace jvmcsharp.instructions.references
             var cp = frame.Method.Class!.ConstantPool;
             var classRef = cp.Get<ClassRef>(Index);
             var @class = classRef.ResolveClass();
+            if (!@class.InitStarted)
+            {
+                frame.RevertNextPc();
+                CommonLogic.InitClass(frame.Thread, @class);
+                return;
+            }
             if (@class.IsInterface() || @class.IsAbstract())
             {
                 throw new Exception("InstantiationError");

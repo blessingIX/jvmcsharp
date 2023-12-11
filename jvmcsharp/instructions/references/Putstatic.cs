@@ -15,6 +15,13 @@ namespace jvmcsharp.instructions.references
             var field = fieldRef.ResolveField();
             var @class = field.Class!;
 
+            if (!@class.InitStarted)
+            {
+                frame.RevertNextPc();
+                CommonLogic.InitClass(frame.Thread, @class);
+                return;
+            }
+
             if (!field.IsStatic())
             {
                 throw new Exception("java.lang.IncompatibleClassChangeError");

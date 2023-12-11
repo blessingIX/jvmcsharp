@@ -10,5 +10,7 @@ namespace jvmcsharp.rtda
         public Thread Thread { get; internal set; } = thread;
         public Method Method { get; internal set; } = method;
         public int NextPc { get; internal set; }
+
+        public void RevertNextPc() => NextPc = Thread.Pc;
     }
 }

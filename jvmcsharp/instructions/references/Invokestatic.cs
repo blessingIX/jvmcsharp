@@ -8,9 +8,16 @@ namespace jvmcsharp.instructions.references
     {
         public override void Execute(Frame frame)
         {
-            var cp = frame.Method.Class!.ConstantPool;
+            Class @class = frame.Method.Class!;
+            var cp = @class.ConstantPool;
             var methodRef = cp.Get<MethodRef>(Index);
             var resolvedMethod = methodRef.ResolveMethod();
+            if (!@class.InitStarted)
+            {
+                frame.RevertNextPc();
+                CommonLogic.InitClass(frame.Thread, @class);
+                return;
+            }
             if (!resolvedMethod.IsStatic())
             {
                 throw new Exception("java.lang.IncompatibleClassChangeError");

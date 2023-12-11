@@ -1,6 +1,4 @@
-﻿
-
-namespace jvmcsharp.instructions.basis
+﻿namespace jvmcsharp.instructions.basis
 {
     internal class BytecodeReader
     {

@@ -18,6 +18,7 @@ namespace jvmcsharp.rtda.heap
         public uint InstanceSlotCount { get; internal set; }
         public uint StaticSlotCount { get; internal set; }
         public LocalVars StaticVars { get; internal set; } = new(0);
+        public bool InitStarted { get; internal set; }
 
         public Class(ClassFile cf)
         {
@@ -65,7 +66,8 @@ namespace jvmcsharp.rtda.heap
             if (!IsInterface())
             {
                 return other.IsSubClassOf(this);
-            } else
+            }
+            else
             {
                 return other.IsImplements(this);
             }
@@ -111,7 +113,8 @@ namespace jvmcsharp.rtda.heap
             return false;
         }
 
-        public Method GetMainMethod() {
+        public Method GetMainMethod()
+        {
             var method = GetStaticMethod("main", "([Ljava/lang/String;)V");
             if (method != null && (!method.IsPublic() || !method.IsStatic())) method = null;
             return method!;
@@ -130,5 +133,9 @@ namespace jvmcsharp.rtda.heap
         }
 
         public bool IsSuperClassOf(Class other) => other.IsSubClassOf(this);
+
+        public void StartInit() => InitStarted = true;
+
+        public Method GetClinitMethod() => GetStaticMethod("<clinit>", "()V");
     }
 }

@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /java/.idea
 /java/jvmcsharp.iml
+.vscode/
