@@ -26,7 +26,9 @@ namespace jvmcsharp.rtda.heap
             => cfMethods.Select(cfMethod =>
             {
                 var method = new Method(cfMethod) { Class = @class };
-                method.CalcArgSlotCount();
+                var md = MethodDescriptorParser.ParseMethodDescriptor(method.Descriptor);
+                method.CalcArgSlotCount(md);
+                method.TryInjectCodeAttribute(md);
                 return method;
             }).ToArray();
 
@@ -42,10 +44,9 @@ namespace jvmcsharp.rtda.heap
 
         public bool IsStrict() => 0 != (AccessFlags & ACC_STRICT);
 
-        private void CalcArgSlotCount()
+        private void CalcArgSlotCount(MethodDescriptor md)
         {
-            var parsedDescriptor = MethodDescriptorParser.ParseMethodDescriptor(Descriptor);
-            foreach (var _ in parsedDescriptor.ParameterTypes)
+            foreach (var _ in md.ParameterTypes)
             {
                 ArgSlotCount++;
             }
@@ -53,6 +54,28 @@ namespace jvmcsharp.rtda.heap
             {
                 ArgSlotCount++;
             }
+        }
+
+        private void TryInjectCodeAttribute(MethodDescriptor md)
+        {
+            if (!IsNative() || Code.Length > 0)
+            {
+                return;
+            }
+
+            MaxStack = 4; // todo
+            MaxLocals = (ushort)ArgSlotCount;
+            byte[] code = [0xfe, 0xac];
+            code[1] = md.ReturnType[0] switch
+            {
+                'V' => 0xb1,
+                'D' => 0xaf,
+                'F' => 0xae,
+                'J' => 0xad,
+                'L' or '[' => 0xb0,
+                _ => 0xac,
+            };
+            Code = code;
         }
     }
 }

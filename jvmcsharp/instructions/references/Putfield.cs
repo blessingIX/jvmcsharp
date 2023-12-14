@@ -21,7 +21,7 @@ namespace jvmcsharp.instructions.references
             }
             if (field.IsFinal())
             {
-                if (currentClass != @class || currentMethod.Name != "<clinit>")
+                if (currentClass != @class || currentMethod.Name != "<init>")
                 {
                     throw new Exception("java.lang.IllegalAccessError");
                 }

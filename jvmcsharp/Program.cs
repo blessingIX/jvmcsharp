@@ -1,5 +1,6 @@
 ﻿using jvmcsharp.classfile;
 using jvmcsharp.classpath;
+using jvmcsharp.native;
 using jvmcsharp.rtda;
 using jvmcsharp.rtda.heap;
 
@@ -26,6 +27,7 @@ namespace jvmcsharp
 
         static void StartJVM(Cmd cmd)
         {
+            Registry.RegisterNativeMethods();
             var cp = new Classpath(cmd.XjreOption, cmd.CpOption);
             Console.WriteLine($"classpath: {cp} class: {cmd.Class} args: [{string.Join(", ", cmd.Args)}]");
             var classLoader = new ClassLoader(cp) { VerboseFlag = cmd.VerboseClassFlag };

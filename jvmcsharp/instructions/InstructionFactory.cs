@@ -7,6 +7,7 @@ using jvmcsharp.instructions.extended;
 using jvmcsharp.instructions.loads;
 using jvmcsharp.instructions.math;
 using jvmcsharp.instructions.references;
+using jvmcsharp.instructions.reserved;
 using jvmcsharp.instructions.stack;
 using jvmcsharp.instructions.stores;
 
@@ -162,7 +163,7 @@ namespace jvmcsharp.instructions
         // public static readonly ATHROW athrow = new();
         // public static readonly MONITOR_ENTER monitorenter = new();
         // public static readonly MONITOR_EXIT monitorexit = new();
-        // public static readonly INVOKE_NATIVE invoke_native = new();
+        public static readonly INVOKE_NATIVE invoke_native = new();
 
         public static Instruction Create(byte opcode)
         {
@@ -371,7 +372,7 @@ namespace jvmcsharp.instructions
                 0xc8 => new GOTO_W(),
                 // 0xc9 => new JSR_W(),
                 // 0xca => breakpoint,
-                // 0xfe => impdep1,
+                0xfe => invoke_native,
                 // 0xff => impdep2,
                 _ => throw new Exception($"Unsupported opcode => {opcode:X2}!"),
             };

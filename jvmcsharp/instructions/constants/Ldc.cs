@@ -28,7 +28,8 @@ namespace jvmcsharp.instructions.constants
             }
             else if (c is ClassRef classRef)
             {
-                // TODO
+                var classObj = classRef.ResolveClass().JClass;
+                stack.Push(classObj);
             }
             else
             {

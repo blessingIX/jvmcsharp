@@ -19,5 +19,11 @@ namespace jvmcsharp.instructions.references
             InternedStrings[csString] = jString;
             return jString;
         }
+
+        public static string CsharpString(JavaObject javaString)
+        {
+            var charArr = (ArrayObject)javaString.GetRefVar("value", "[C");
+            return new string(charArr.Chars.Select(v => (char)v).ToArray());
+        }
     }
 }

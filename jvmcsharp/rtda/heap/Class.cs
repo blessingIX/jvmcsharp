@@ -19,8 +19,9 @@ namespace jvmcsharp.rtda.heap
         public uint StaticSlotCount { get; internal set; }
         public LocalVars StaticVars { get; internal set; } = new(0);
         public bool InitStarted { get; internal set; }
+        public JavaObject JClass { get; internal set; } // java.lang.Class实例
 
-        private static readonly Dictionary<string, string> PrivitiveTypes = new()
+        internal static readonly Dictionary<string, string> PrimitiveTypes = new()
         {
             { "void", "V" },
             { "boolean", "Z" },
@@ -37,7 +38,9 @@ namespace jvmcsharp.rtda.heap
         internal Class() {}
 #pragma warning restore CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑声明为可以为 null。
 
+#pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑声明为可以为 null。
         public Class(ClassFile cf)
+#pragma warning restore CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑声明为可以为 null。
         {
             AccessFlags = cf.AccessFlags;
             Name = cf.ClassName();
@@ -246,7 +249,7 @@ namespace jvmcsharp.rtda.heap
             {
                 return name;
             }
-            if (PrivitiveTypes.TryGetValue(name, out var type))
+            if (PrimitiveTypes.TryGetValue(name, out var type))
             {
                 return type;
             }
@@ -275,7 +278,7 @@ namespace jvmcsharp.rtda.heap
             {
                 return descriptor[1..^1];
             }
-            foreach (var (className, d) in PrivitiveTypes)
+            foreach (var (className, d) in PrimitiveTypes)
             {
                 if (d == descriptor)    // primitive
                 {
@@ -301,5 +304,7 @@ namespace jvmcsharp.rtda.heap
             }
             return null!;
         }
+
+        public string JavaName() => Name.Replace('/', '.');
     }
 }

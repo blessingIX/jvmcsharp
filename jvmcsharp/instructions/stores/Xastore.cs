@@ -45,7 +45,7 @@ namespace jvmcsharp.instructions.stores
         public override void Execute(Frame frame)
         {
             var stack = frame.OperandStack;
-            var val = stack.Pop<ushort>();
+            var val = stack.Pop<int>();
             var index = stack.Pop<int>();
             var arrRef = stack.Pop<ArrayObject>()
                 ?? throw new Exception("java.lang.NullPointException");
@@ -54,7 +54,7 @@ namespace jvmcsharp.instructions.stores
             {
                 throw new Exception("ArrayIndexOutOfBoundsException");
             }
-            vals[index] = val;
+            vals[index] = (ushort)val;
         }
     }
 

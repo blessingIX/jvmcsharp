@@ -4,23 +4,41 @@ using jvmcsharp.instructions.references;
 
 namespace jvmcsharp.rtda.heap
 {
-    internal class ClassLoader(Classpath classpath)
+    internal class ClassLoader
     {
-        public Classpath Cp { get; internal set; } = classpath;
+        public Classpath Cp { get; internal set; }
         public Dictionary<string, Class> ClassMap { get; internal set; } = [];
         public bool VerboseFlag { get; internal set; }
+
+        public ClassLoader(Classpath classpath)
+        {
+            Cp = classpath;
+            LoadBasicClasses();
+            LoadPrimitiveClasses();
+        }
 
         public Class LoadClass(string name)
         {
             if (ClassMap.TryGetValue(name, out Class? value))
             {
-                return value;
+                return value;   // already loaded
             }
-            if (name[0] == '[')
+            Class @class;
+            if (name[0] == '[') // array class
             {
-                return LoadArrayClass(name);
+                @class = LoadArrayClass(name);
             }
-            return LoadNonArrayClass(name);
+            else
+            {
+                @class = LoadNonArrayClass(name);
+            }
+
+            if (ClassMap.TryGetValue("java/lang/Class", out Class? jlClassClass))
+            {
+                @class.JClass = jlClassClass.NewObject();
+                @class.JClass.Extra = @class;
+            }
+            return @class;
         }
 
         private Class LoadNonArrayClass(string name)
@@ -195,6 +213,41 @@ namespace jvmcsharp.rtda.heap
             {
                 throw new Exception($"java.lang.ClassNotFoundException: {name}");
             }
+        }
+
+        private void LoadBasicClasses()
+        {
+            var jlClassClass = LoadClass("java/lang/Class");
+            foreach (var (_, @class) in ClassMap)
+            {
+                if (@class.JClass == null)
+                {
+                    @class.JClass = jlClassClass.NewObject();
+                    @class.JClass.Extra = @class;
+                }
+            }
+        }
+
+        private void LoadPrimitiveClasses()
+        {
+            foreach (var (primitiveType, _) in Class.PrimitiveTypes)
+            {
+                LoadPrimitiveClass(primitiveType);
+            }
+        }
+
+        private void LoadPrimitiveClass(string primitiveType)
+        {
+            var @class = new Class
+            {
+                AccessFlags = AccessFlags.ACC_PUBLIC,
+                Name = primitiveType,
+                Loader = this,
+                InitStarted = true,
+                JClass = ClassMap["java/lang/Class"].NewObject()
+            };
+            @class.JClass.Extra = @class;
+            ClassMap[primitiveType] = @class;
         }
     }
 }

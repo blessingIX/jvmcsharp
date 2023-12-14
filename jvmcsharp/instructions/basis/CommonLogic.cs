@@ -28,19 +28,6 @@ namespace jvmcsharp.instructions.basis
                     if (i == 0) break;
                 }
             }
-
-            // hack
-            if (method.IsNative())
-            {
-                if (method.Name == "registerNatives")
-                {
-                    thread.PopFrame();
-                }
-                else
-                {
-                    throw new Exception($"native method: {method.Class}.{method.Name}{method.Descriptor}");
-                }
-            }
         }
 
         public static void InitClass(Thread thread, Class @class)

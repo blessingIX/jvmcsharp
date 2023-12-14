@@ -8,6 +8,7 @@ namespace jvmcsharp.rtda.heap
     {
         public Class Class { get; internal set; }
         public object Data { get; internal set; }
+        public object? Extra { get; internal set; }
         public LocalVars Fields => (LocalVars)Data;
 
         internal JavaObject()
