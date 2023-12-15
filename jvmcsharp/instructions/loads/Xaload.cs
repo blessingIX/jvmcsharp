@@ -51,7 +51,7 @@ namespace jvmcsharp.instructions.loads
             {
                 throw new Exception("ArrayIndexOutOfBoundsException");
             }
-            stack.Push(vals[index]);
+            stack.Push<int>(vals[index]);
         }
     }
 

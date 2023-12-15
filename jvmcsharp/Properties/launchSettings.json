@@ -31,6 +31,10 @@
     "ch09getClass": {
       "commandName": "Project",
       "commandLineArgs": "-Xjre \"D:\\Env\\jdk\\zulu8.74.0.17-ca-fx-jdk8.0.392-win_x64\\jre\" -cp \"../../../../java\" -verbose:class -verbose:inst jvmcsharp.GetClassTest"
+    },
+    "ch09StringTest": {
+      "commandName": "Project",
+      "commandLineArgs": "-Xjre \"D:\\Env\\jdk\\zulu8.74.0.17-ca-fx-jdk8.0.392-win_x64\\jre\" -cp \"../../../../java\" -verbose:class -verbose:inst jvmcsharp.StringTest"
     }
   }
 }

@@ -306,5 +306,7 @@ namespace jvmcsharp.rtda.heap
         }
 
         public string JavaName() => Name.Replace('/', '.');
+
+        public bool IsPrimitive() => PrimitiveTypes.ContainsKey(Name);
     }
 }
