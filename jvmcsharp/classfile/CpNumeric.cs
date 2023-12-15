@@ -18,7 +18,7 @@
         public void ReadInfo(ClassReader reader)
         {
             var bytes = reader.ReadUInt32();
-            Val = bytes;
+            Val = BitConverter.UInt32BitsToSingle(bytes);
         }
     }
 
@@ -40,7 +40,7 @@
         public void ReadInfo(ClassReader reader)
         {
             var bytes = reader.ReadUInt64();
-            Val = bytes;
+            Val = BitConverter.UInt64BitsToDouble(bytes);
         }
     }
 }
