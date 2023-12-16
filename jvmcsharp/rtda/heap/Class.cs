@@ -195,6 +195,23 @@ namespace jvmcsharp.rtda.heap
             return method!;
         }
 
+        public Method GetMethod(string name, string descripter, bool isStatic)
+        {
+            for (var c = this; c != null; c = c.SuperClass)
+            {
+                foreach (var method in Methods)
+                {
+                    if (method.IsStatic() == isStatic
+                        && method.Name == name
+                        && method.Descriptor == descripter)
+                    {
+                        return method;
+                    }
+                }
+            }
+            return null!;
+        }
+
         public Method GetStaticMethod(string name, string descriptor)
         {
             foreach (var method in Methods)
@@ -206,6 +223,8 @@ namespace jvmcsharp.rtda.heap
             }
             return null!;
         }
+
+        public Method GetInstanceMethod(string name, string descriptor) => GetMethod(name, descriptor, false);
 
         public bool IsSuperClassOf(Class other) => other.IsSubClassOf(this);
 
@@ -253,7 +272,7 @@ namespace jvmcsharp.rtda.heap
             {
                 return type;
             }
-            return $"L{name}";
+            return $"L{name};";
         }
 
         public Class ComponentClass() => Loader!.LoadClass(GetComponentClassName(Name));
@@ -308,5 +327,17 @@ namespace jvmcsharp.rtda.heap
         public string JavaName() => Name.Replace('/', '.');
 
         public bool IsPrimitive() => PrimitiveTypes.ContainsKey(Name);
+
+        public JavaObject GetRefVar(string fieldName, string fieldDescriptor)
+        {
+            var field = GetField(fieldName, fieldDescriptor, true);
+            return StaticVars.Get<JavaObject>(field.SlotId);
+        }
+
+        public void SetRefVar(string fieldName, string fieldDescriptor, JavaObject @ref)
+        {
+            var field = GetField(fieldName, fieldDescriptor, true);
+            StaticVars.Set(field.SlotId, @ref);
+        }
     }
 }

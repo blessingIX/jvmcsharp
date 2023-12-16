@@ -57,24 +57,21 @@
         public static ushort ToUInt16(byte[] data)
         {
             var bytes = BitConverter.GetBytes(BitConverter.ToUInt16(data));
-            if (BitConverter.IsLittleEndian)
-                Array.Reverse(bytes);
+            Array.Reverse(bytes);
             return BitConverter.ToUInt16(bytes);
         }
 
         public static uint ToUInt32(byte[] data)
         {
             var bytes = BitConverter.GetBytes(BitConverter.ToUInt32(data));
-            if (BitConverter.IsLittleEndian)
-                Array.Reverse(bytes);
+            Array.Reverse(bytes);
             return BitConverter.ToUInt32(bytes);
         }
 
         public static ulong ToUInt64(byte[] data)
         {
             var bytes = BitConverter.GetBytes(BitConverter.ToUInt64(data));
-            if (BitConverter.IsLittleEndian)
-                Array.Reverse(bytes);
+            Array.Reverse(bytes);
             return BitConverter.ToUInt64(bytes);
         }
     }

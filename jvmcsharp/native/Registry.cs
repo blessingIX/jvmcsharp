@@ -17,6 +17,8 @@ namespace jvmcsharp.native
             HashSet<string> namespaces =
             [
                 "java.lang",
+                "java.lang.reflect",
+                "sun.misc",
             ];
             var baseNamespace = typeof(Registry).Namespace;
             namespaces = namespaces.Select(v => $"{baseNamespace}.{v}").ToHashSet();

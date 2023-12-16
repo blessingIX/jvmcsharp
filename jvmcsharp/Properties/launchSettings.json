@@ -43,6 +43,10 @@
     "ch09clone": {
       "commandName": "Project",
       "commandLineArgs": "-Xjre \"D:\\Env\\jdk\\zulu8.74.0.17-ca-fx-jdk8.0.392-win_x64\\jre\" -cp \"../../../../java\" -verbose:inst jvmcsharp.CloneTest"
+    },
+    "ch09box": {
+      "commandName": "Project",
+      "commandLineArgs": "-Xjre \"D:\\Env\\jdk\\zulu8.74.0.17-ca-fx-jdk8.0.392-win_x64\\jre\" -cp \"../../../../java\" -verbose:class -verbose:inst jvmcsharp.BoxTest"
     }
   }
 }

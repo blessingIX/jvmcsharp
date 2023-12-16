@@ -11,6 +11,7 @@ namespace jvmcsharp.native.java.lang
             Registry.Register("java/lang/Class", "getPrimitiveClass", "(Ljava/lang/String;)Ljava/lang/Class;", GetPrimitiveClass);
             Registry.Register("java/lang/Class", "getName0", "()Ljava/lang/String;", GetName0);
             Registry.Register("java/lang/Class", "desiredAssertionStatus0", "(Ljava/lang/Class;)Z", DesiredAssertionStatus0);
+            Registry.Register("java/lang/Class", "getComponentType", "()Ljava/lang/Class;", GetComponentType);
         }
 
         private static void GetPrimitiveClass(Frame frame)
@@ -35,6 +36,21 @@ namespace jvmcsharp.native.java.lang
         {
             // TODO 暂不讨论断言
             frame.OperandStack.Push(0);
+        }
+
+        /// <summary>
+        /// 如何是数组则返回数组元素的Class，否则返回null
+        /// </summary>
+        private static void GetComponentType(Frame frame)
+        {
+            var @this = frame.LocalVars.GetThis();
+            var @class = (rtda.heap.Class)@this.Extra!;
+            JavaObject? component = null;
+            if (@class.IsArray())
+            {
+                component = @class.Loader!.LoadClass(@class.Name[2..^0]).JClass;
+            }
+            frame.OperandStack.Push(component);
         }
     }
 }
