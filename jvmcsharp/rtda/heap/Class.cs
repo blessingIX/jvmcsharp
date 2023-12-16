@@ -20,6 +20,7 @@ namespace jvmcsharp.rtda.heap
         public LocalVars StaticVars { get; internal set; } = new(0);
         public bool InitStarted { get; internal set; }
         public JavaObject JClass { get; internal set; } // java.lang.Class实例
+        public string SourceFile { get; internal set; } = string.Empty;
 
         internal static readonly Dictionary<string, string> PrimitiveTypes = new()
         {
@@ -49,6 +50,7 @@ namespace jvmcsharp.rtda.heap
             ConstantPool = new ConstantPool(this, cf.ConstantPool);
             Fields = Field.CreateFields(this, cf.Fileds);
             Methods = Method.CreateMethods(this, cf.Methods);
+            SourceFile = GetSourceFile(cf);
         }
 
         public bool IsPublic() => 0 != (AccessFlags & ACC_PUBLIC);
@@ -338,6 +340,16 @@ namespace jvmcsharp.rtda.heap
         {
             var field = GetField(fieldName, fieldDescriptor, true);
             StaticVars.Set(field.SlotId, @ref);
+        }
+
+        private string GetSourceFile(ClassFile cf)
+        {
+            var sfAttr = cf.SourceFileAttribute();
+            if (sfAttr != null)
+            {
+                return sfAttr.FileName();
+            }
+            return "Unknow";
         }
     }
 }

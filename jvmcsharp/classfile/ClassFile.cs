@@ -70,5 +70,17 @@
         public string SuperClassName() => SuperClass > 0 ? ConstantPool.GetClassName(SuperClass) : string.Empty;
 
         public string[] InterfaceNames() => Interfaces.Select(i => ConstantPool.GetClassName(i)).ToArray();
+
+        public SourceFileAttribute SourceFileAttribute()
+        {
+            foreach (var attrInfo in Attributes)
+            {
+                if (attrInfo is SourceFileAttribute sourceFileAttribute)
+                {
+                    return sourceFileAttribute;
+                }
+            }
+            return null!;
+        }
     }
 }

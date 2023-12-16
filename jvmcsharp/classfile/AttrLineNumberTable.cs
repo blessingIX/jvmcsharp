@@ -17,6 +17,19 @@
                 };
             }
         }
+
+        public int GetLineNumber(int pc)
+        {
+            for (int i = LineNumberTable.Length - 1; i >= 0; i--)
+            {
+                var entry = LineNumberTable[i];
+                if (pc >= entry.StartPc)
+                {
+                    return entry.LineNumber;
+                }
+            }
+            return -1;
+        }
     }
 
     internal class LineNumberTableEntry

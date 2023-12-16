@@ -47,6 +47,14 @@
     "ch09box": {
       "commandName": "Project",
       "commandLineArgs": "-Xjre \"D:\\Env\\jdk\\zulu8.74.0.17-ca-fx-jdk8.0.392-win_x64\\jre\" -cp \"../../../../java\" -verbose:class -verbose:inst jvmcsharp.BoxTest"
+    },
+    "ch10parseFoo": {
+      "commandName": "Project",
+      "commandLineArgs": "-Xjre \"D:\\Env\\jdk\\zulu8.74.0.17-ca-fx-jdk8.0.392-win_x64\\jre\" -cp \"../../../../java\" -verbose:class -verbose:inst jvmcsharp.ParseTest \"acb\""
+    },
+    "ch10parseBar": {
+      "commandName": "Project",
+      "commandLineArgs": "-Xjre \"D:\\Env\\jdk\\zulu8.74.0.17-ca-fx-jdk8.0.392-win_x64\\jre\" -cp \"../../../../java\" -verbose:class -verbose:inst jvmcsharp.ParseTest"
     }
   }
 }

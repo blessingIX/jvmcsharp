@@ -3,12 +3,12 @@ using static jvmcsharp.rtda.heap.AccessFlags;
 
 namespace jvmcsharp.rtda.heap
 {
-    internal class ClassMember(MemberInfo memberInfo)
+    internal class ClassMember(Class @class, MemberInfo memberInfo)
     {
         public ushort AccessFlags { get; internal set; } = memberInfo.AccessFlags;
         public string Name { get; internal set; } = memberInfo.Name();
         public string Descriptor { get; internal set; } = memberInfo.Descriptor();
-        public Class? Class { get; internal set; }
+        public Class Class { get; internal set; } = @class;
 
         public bool IsPublic() => 0 != (AccessFlags & ACC_PUBLIC);
 

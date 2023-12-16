@@ -22,6 +22,15 @@ namespace jvmcsharp.rtda
             return val!;
         }
 
-        internal JavaObject GetRefFromTop(uint n) => (JavaObject)Slot[Size - 1 - n];
+        public JavaObject GetRefFromTop(uint n) => (JavaObject)Slot[Size - 1 - n];
+
+        public void Clear()
+        {
+            Size = 0;
+            for (int i = 0; i < Slot.Length; i++)
+            {
+                Slot[i] = null!;
+            }
+        }
     }
 }

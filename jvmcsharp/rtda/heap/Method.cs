@@ -9,8 +9,10 @@ namespace jvmcsharp.rtda.heap
         public ushort MaxLocals { get; internal set; }
         public byte[] Code { get; internal set; } = [];
         public uint ArgSlotCount { get; internal set; }
+        public ExceptionTable? ExceptionTable { get; internal set; }
+        public LineNumberTableAttribute? LineNumberTable { get; internal set; }
 
-        public Method(MemberInfo memberInfo) : base(memberInfo)
+        public Method(Class @class, MemberInfo memberInfo) : base(@class, memberInfo)
         {
             // copy attribute
             var codeAttr = memberInfo.CodeAttribute();
@@ -19,13 +21,15 @@ namespace jvmcsharp.rtda.heap
                 MaxStack = codeAttr.MaxStack;
                 MaxLocals = codeAttr.MaxLocals;
                 Code = codeAttr.Code;
+                LineNumberTable = codeAttr.LineNumberTableAttribute();
+                ExceptionTable = new ExceptionTable(codeAttr.ExceptionTable, Class!.ConstantPool);
             }
         }
 
         public static Method[] CreateMethods(Class @class, MemberInfo[] cfMethods)
             => cfMethods.Select(cfMethod =>
             {
-                var method = new Method(cfMethod) { Class = @class };
+                var method = new Method(@class, cfMethod);
                 var md = MethodDescriptorParser.ParseMethodDescriptor(method.Descriptor);
                 method.CalcArgSlotCount(md);
                 method.TryInjectCodeAttribute(md);
@@ -76,6 +80,25 @@ namespace jvmcsharp.rtda.heap
                 _ => 0xac,
             };
             Code = code;
+        }
+
+        public int FindExceptionHandler(Class exClass, int pc)
+        {
+            var handler = ExceptionTable!.FindExceptionHander(exClass, pc);
+            return handler != null ? handler.HandlerPc : -1;
+        }
+
+        public int GetLineNumber(int pc)
+        {
+            if (IsNative())
+            {
+                return -2;
+            }
+            if (LineNumberTable == null)
+            {
+                return -1;
+            }
+            return LineNumberTable.GetLineNumber(pc);
         }
     }
 }

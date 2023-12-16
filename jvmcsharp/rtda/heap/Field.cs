@@ -8,7 +8,7 @@ namespace jvmcsharp.rtda.heap
         public uint ConstValueIndex { get; internal set; }
         public uint SlotId { get; internal set; }
 
-        public Field(MemberInfo memberInfo) : base(memberInfo)
+        public Field(Class @class, MemberInfo memberInfo) : base(@class, memberInfo)
         {
             var valAttr = memberInfo.ConstantValueAttribute();
             if (valAttr != null)
@@ -18,7 +18,7 @@ namespace jvmcsharp.rtda.heap
         }
 
         public static Field[] CreateFields(Class @class, MemberInfo[] cfFields)
-            => cfFields.Select(cfFiled => new Field(cfFiled) { Class = @class }).ToArray();
+            => cfFields.Select(cfFiled => new Field(@class, cfFiled)).ToArray();
 
         public bool IsVolatile() => 0 != (AccessFlags & ACC_VOLATILE);
 

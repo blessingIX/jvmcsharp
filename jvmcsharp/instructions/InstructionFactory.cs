@@ -160,7 +160,7 @@ namespace jvmcsharp.instructions
         public static readonly ARETURN areturn = new();
         public static readonly RETURN @return = new();
         public static readonly ARRAY_LENGTH arraylength = new();
-        // public static readonly ATHROW athrow = new();
+        public static readonly ATHROW athrow = new();
         // public static readonly MONITOR_ENTER monitorenter = new();
         // public static readonly MONITOR_EXIT monitorexit = new();
         public static readonly INVOKE_NATIVE invoke_native = new();
@@ -360,7 +360,7 @@ namespace jvmcsharp.instructions
                 0xbc => new NEW_ARRAY(),
                 0xbd => new ANEW_ARRAY(),
                 0xbe => arraylength,
-                // 0xbf => athrow,
+                0xbf => athrow,
                 0xc0 => new CHECK_CAST(),
                 0xc1 => new INSTANCE_OF(),
                 // 0xc2 => monitorenter,

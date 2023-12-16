@@ -43,5 +43,24 @@
         }
 
         public bool IsEmpty() => Top == null;
+
+        public void Clear()
+        {
+            while (!IsEmpty())
+            {
+                Pop();
+            }
+        }
+
+        public Frame[] GetFrames()
+        {
+            var frames = new Frame[Size];
+            int i = 0;
+            for (var frame = Top; frame != null; frame = frame.Lower)
+            {
+                frames[i++] = frame;
+            }
+            return frames;
+        }
     }
 }

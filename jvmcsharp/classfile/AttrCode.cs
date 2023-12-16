@@ -18,6 +18,18 @@
             ExceptionTable = ExceptionTableEntry.ReadExceptionTable(reader);
             Attributes = AttributeInfo.ReadAttributes(reader, Cp);
         }
+
+        public LineNumberTableAttribute LineNumberTableAttribute()
+        {
+            foreach (var attr in Attributes)
+            {
+                if (attr is LineNumberTableAttribute lineNumberTableAttribute)
+                {
+                    return lineNumberTableAttribute;
+                }
+            }
+            return null!;
+        }
     }
 
     internal class ExceptionTableEntry
